@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:linux": "export NODE_ENV=development&& node main.js",
-    "start:window": "set NODE_ENV=development&& node main.js",
-    "start": "export NODE_ENV=ec2&& node main.js"
+    "dev:linux": "export NODE_ENV=development&& nodemon main.js",
+    "start:window": "set NODE_ENV=development&& nodemon main.js",
+    "start": "export NODE_ENV=ec2 && nodemon main.js"
   },
   "author": "",
   "license": "ISC",
@@ -22,10 +22,13 @@
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
     "mongoose": "^5.3.5",
+    "mysql2": "^1.6.4",
+    "nodemon": "^1.18.9",
     "partial-js": "^1.1.6",
     "path": "^0.12.7",
     "react": "^16.6.0",
     "react-native": "^0.57.4",
+    "sequelize": "^4.42.0",
     "util": "^0.11.0",
     "uuid": "^3.3.2"
   }

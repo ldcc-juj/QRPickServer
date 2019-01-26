@@ -1,5 +1,4 @@
 const development = require('./env/development');
-const ec2 = require('./env/ec2');
 const path = require('path');
 
 const defaults = {
@@ -7,6 +6,5 @@ const defaults = {
 };
 
 module.exports = {
-    development: Object.assign({}, development, defaults),
-    ec2: Object.assign({}, ec2, defaults),
+    development: Object.assign({}, development, defaults)
 }[process.env.NODE_ENV || 'development']

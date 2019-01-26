@@ -1,31 +1,36 @@
-const mongoose = require('mongoose');
+const mysql = require('mysql2/promise');
 const config = require('../config');
+const util = require('util');
 
-
-const option = {
-    socketTimeoutMS: 30000,
-    keepAlive: true,
-    reconnectTries: 30000,
-    useNewUrlParser: true
-};
 
 const DBModule = (function(){
+
+    const pool = mysql.createPool({
+        host: config.store.mysqlHost,
+        port: config.store.mysqlPort,
+        user: config.store.mysqlUser,
+        password: config.store.mysqlPassword,
+        database: config.store.mysqlDatabase,
+        connectionLimit: config.store.ConnectionLimit,
+    });
+  
+    pool.on('enqueue', () => {
+        console.log(util.format("## Waiting for available connection slot ##"));
+    });
+  
     return {
-        Init: function(){
-            (async () => {
-                mongoose.connect(config.mongoose.url, option);
-            })().then(_ => {
-                const db = mongoose.connection;
-                db.on('error', console.error);
-
-                db.once('open', () => {
-                    console.log('Connect to mongod server');
-                });
-
-                mongoose.Promise = global.Promise;
-            })
-        }
-    };
-})();
-
-module.exports = DBModule;
+      query: async queryString => {
+          try {
+              const connection = await pool.getConnection(async conn => conn);
+              const result = await connection.query(queryString);
+              connection.release();
+              return first(result);
+          }
+          catch (error) {
+              throw error;
+          }
+      }
+    }
+  })();
+  
+  module.exports = DBModule;

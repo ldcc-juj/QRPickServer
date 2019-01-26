@@ -8,8 +8,8 @@ const moment = require('moment-timezone');
 const util = require('util');
 
 const config = require('./config');
-const dbModule = require('./modules/dbModule');
 const routeModule = require('./modules/routeModules');
+const entityModule = require('./modules/entityModule');
 
 global.app = new express();
 global.baseUrl = process.env.NODE_ENV === 'ec2' ? `http://ec2-18-225-32-252.us-east-2.compute.amazonaws.com:${config.server.port}`
@@ -21,7 +21,7 @@ function processRun() {
         app.use(bodyParser.json({limit: '15mb'}));
         app.use(bodyParser.urlencoded({ extended: true, limit: '15mb' }));
 
-        dbModule.Init();
+        entityModule.Init();
         routeModule.Init();
     })().then(_ => {
         http.createServer(app).listen(app.get('port'), () => {
