@@ -8,7 +8,8 @@ const config = require('../config');
 const { respondJson, respondOnError } = require('../utils/respond');
 const { itemModel } = require('../model');
 const resultCode = require('../utils/resultCode');
-
+const { writeFile, createDir, createSaveFileData, deleteFile } = require('../modules/fileModule');
+const { imagesTypeCheck } = require('../utils/common');
 const controllerName = 'Item';
 
 router.use((req, res, next) => {
@@ -24,10 +25,10 @@ router.use((req, res, next) => {
 
 router.post('/list', async (req, res) => {
     try {
-        const { brand } = req.body;
+        const { brandId } = req.body;
         const options = {
             where: {
-                brand: brand
+                brandId: brandId
             }
         };
         return go(
@@ -67,19 +68,40 @@ router.post('/detail', async (req, res) => {
 
 router.post('/create', async (req, res) => {
     try {
-        const { modelNumber, category, price, name, discountPrice, brand, amount, information } = req.body;
+        const fileName = req.files ? req.files.image.name : false;
+        const { modelNumber, category, price, name, discountPrice, brandId, amount, information, image } = req.body;
         const data = {
             modelNumber: modelNumber,
             category: category,
             price: price,
             name: name,
             discountPrice: discountPrice,
-            brand: brand,
+            brandId: brandId,
             amount: amount,
-            information: information
+            information: (!!information && information instanceof Object) ? information : JSON.parse(information),
+            imagePath: '',
+            imageUrl: (image && image instanceof String) ? image : ''
         };
 
-        return go(
+        fileName
+        ? go(
+            null,
+            createDir,
+            dir => createSaveFileData(fileName, dir, brandId),
+            result => {
+                data.imagePath = result.path;
+                data.imageUrl = `${config.server.base_url}/assets/images/${moment().tz('Asia/Seoul').format('YYYYMMDD')}/${result.name}`;
+                req.files.image.name = result.name;
+                return req.files;
+            },
+            imagesTypeCheck,
+            writeFile,
+            _ => itemModel.create(data).catch(e => { throw e }),
+            result => !!result.dataValues 
+            ? respondJson(res, resultCode.success, result.dataValues)
+            : respondOnError(res, resultCode.error, { desc: 'Item with Image Create Fail, Check Your Parameters!' })
+        ) 
+        : go(
             data,
             insertData => itemModel.create(insertData).catch(e => { throw e }),
             result => {
@@ -95,7 +117,8 @@ router.post('/create', async (req, res) => {
 
 router.post('/update', async (req, res) => {
     try {
-        const { id, modelNumber, category, price, name, discountPrice, brand, amount, information } = req.body;
+        const fileName = req.files ? req.files.image.name : false;
+        const { id, modelNumber, category, price, name, discountPrice, brandId, amount, information, image } = req.body;
         const options = {
             where: {
                 id: id
@@ -106,13 +129,44 @@ router.post('/update', async (req, res) => {
                 price: price,
                 name: name,
                 discountPrice: discountPrice,
-                brand: brand,
+                brandId: brandId,
                 amount: amount,
-                information: information
+                information: (!!information && information instanceof Object) ? information : JSON.parse(information),
+                imagePath: '',
+                imageUrl: (image && image instanceof String) ? image : ''
             }
         };
 
-        return go(
+        fileName
+        ? go(
+            null,
+            _ => itemModel.find({ where: { id: id } }),
+            result => {
+                if (result[0]) {
+                    resultData = JSON.parse(JSON.stringify(result[0]));
+                    if (result[0].imagePath) {
+                        deleteFile(result[0].imagePath);
+                    }
+                } else{
+                    throw new Error("No Such Data")
+                }
+            },
+            createDir,
+            dir => createSaveFileData(fileName, dir, brandId),
+            result => {
+                options.data.imagePath = result.path;
+                options.data.imageUrl = `${config.server.base_url}/assets/images/${moment().tz('Asia/Seoul').format('YYYYMMDD')}/${result.name}`;
+                req.files.image.name = result.name;
+                return req.files;
+            },
+            imagesTypeCheck,
+            writeFile,
+            _ => itemModel.update(options).catch(e => { throw e }),
+            result => result[0] > 0 
+            ? respondJson(res, resultCode.success, { desc: 'Item Update Success' })
+            : respondOnError(res, resultCode.error, { desc: 'Item with Image Update Fail, Check Your Parameters!' })
+        ) 
+        : go(
             options,
             options => itemModel.update(options).catch(e => { throw e }),
             result => result[0] > 0 
@@ -136,6 +190,21 @@ router.post('/delete', async (req, res) => {
 
         return await go(
             options,
+            itemModel.find,
+            result => {
+                if (result[0]) {
+                    if (result[0].imagePath) {
+                        deleteFile(result[0].imagePath);
+                    };
+                    return {
+                        where: {
+                            id: result[0].id
+                        }
+                    };
+                } else {
+                    throw new Error("No Such Data")
+                }
+            },
             options =>  itemModel.delete(options).catch(e => { throw e }),
             result => {
                 return result > 0 

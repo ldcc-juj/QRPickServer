@@ -6,7 +6,6 @@ const Common = (function (){
     imagesTypeCheck: async function (images) {
       try{
         const result = await go(images,
-          logf,
           every(v => ['JPG', 'JPEG', 'PNG', 'jpg', 'jpeg', 'png']
             .includes(
               last(v.name.split('.'))

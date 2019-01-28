@@ -1,7 +1,7 @@
 const util = require('util');
 const moment = require('moment-timezone');
 
-const { userCtrl, displayCtrl, itemCtrl } = require('../controller');
+const { userCtrl, displayCtrl, itemCtrl, authCtrl } = require('../controller');
 
 const RouteModules = (function(){
     return {
@@ -19,6 +19,7 @@ const RouteModules = (function(){
             app.use('/user', userCtrl);
             app.use('/display', displayCtrl);
             app.use('/item', itemCtrl);
+            app.use('/auth', authCtrl);
             console.log(util.format('[Logger]::[Route]::[Service]::[%s]::[Started]', 
             moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')));
         }

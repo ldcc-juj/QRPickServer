@@ -6,11 +6,11 @@ const router = express.Router();
 
 const config = require('../config');
 const { respondJson, respondOnError } = require('../utils/respond');
-const { userModel } = require('../model');
+const { authModel } = require('../model');
 const resultCode = require('../utils/resultCode');
 const { parameterFormCheck } = require('../utils/common');
 
-const controllerName = 'User';
+const controllerName = 'Auth';
 
 router.use((req, res, next) => {
   console.log(util.format('[Logger]::[Controller]::[%sController]::[Access Ip %s]::[Access Time %s]',
@@ -30,20 +30,21 @@ router.use((req, res, next) => {
 
 router.post('/login', async (req, res) => {
   try {
-    const { userid = false, password = false } = req.body;
+    const { authid = false, password = false } = req.body;
 
-    if (!userid || !password) { throw { message: 'Incorrect Information!' }; };
+    console.log(req.body);
+    if (!authid || !password) { throw { message: 'Incorrect Information!' }; };
 
     const options = {
       where : {
-        userid: userid,
+        authid: authid,
         password: password
       }
     };
 
     accountInfo = await go(
       options,
-      userModel.find,
+      authModel.find,
       result => result.length > 0 ? result[0].dataValues : result
     );
 
@@ -53,31 +54,7 @@ router.post('/login', async (req, res) => {
       //req.session.name = account.username;
       respondJson(res, resultCode.success, account);
      })(accountInfo) 
-    : respondOnError(res, resultCode.error, { desc: 'Invalid User' });
-  } catch (error) {
-    return respondOnError(res, resultCode.error, error.message);
-  }
-});
-
-router.post('/create', async (req, res) => {
-  try {
-    const { userid, password, username } = req.body;
-
-    const data = {
-        userid: userid,
-        password: password,
-        username: username
-    };
-
-    return go(
-      data,
-      insertData => userModel.create(insertData).catch(e => { throw e }),
-      result => {
-          return !!result.dataValues
-          ?   respondJson(res, resultCode.success, result.dataValues)
-          :   respondOnError(res, resultCode.error, { desc: 'User Register Fail, Check Your Parameters!' })
-      }
-    );
+    : respondOnError(res, resultCode.error, { desc: 'Invalid Auth' });
   } catch (error) {
     return respondOnError(res, resultCode.error, error.message);
   }
