@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:linux": "export NODE_ENV=development&& nodemon main.js",
     "start:window": "set NODE_ENV=development&& nodemon main.js",
-    "start": "export NODE_ENV=ec2 && nodemon main.js"
+    "start": "export NODE_ENV=ec2&& nodemon main.js"
   },
   "author": "",
   "license": "ISC",
