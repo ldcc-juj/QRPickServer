@@ -10,7 +10,7 @@ const { userModel } = require('../model');
 const resultCode = require('../utils/resultCode');
 const { parameterFormCheck } = require('../utils/common');
 
-const controllerName = 'Auth';
+const controllerName = 'User';
 
 router.use((req, res, next) => {
   console.log(util.format('[Logger]::[Controller]::[%sController]::[Access Ip %s]::[Access Time %s]',
@@ -32,7 +32,6 @@ router.post('/login', async (req, res) => {
   try {
     const { userid = false, password = false } = req.body;
 
-    console.log(req.body);
     if (!userid || !password) { throw { message: 'Incorrect Information!' }; };
 
     const options = {
@@ -55,6 +54,30 @@ router.post('/login', async (req, res) => {
       respondJson(res, resultCode.success, account);
      })(accountInfo) 
     : respondOnError(res, resultCode.error, { desc: 'Invalid User' });
+  } catch (error) {
+    return respondOnError(res, resultCode.error, error.message);
+  }
+});
+
+router.post('/create', async (req, res) => {
+  try {
+    const { userid, password, username } = req.body;
+
+    const data = {
+        userid: userid,
+        password: password,
+        username: username
+    };
+
+    return go(
+      data,
+      insertData => userModel.create(insertData).catch(e => { throw e }),
+      result => {
+          return !!result.dataValues
+          ?   respondJson(res, resultCode.success, result.dataValues)
+          :   respondOnError(res, resultCode.error, { desc: 'User Register Fail, Check Your Parameters!' })
+      }
+    );
   } catch (error) {
     return respondOnError(res, resultCode.error, error.message);
   }

@@ -1,18 +1,21 @@
 const util = require('util');
 const moment = require('moment');
-const { user, display, item } = require('../entity');
+const { user, display, item, auth } = require('../entity');
 
 const EntityModule = (function () {
     return {
         Init: function () {
-            item.belongsTo(display, { foreignKey : 'brand', onUpdate : 'CASCADE', onDelete: 'CASCADE' });
+            item.belongsTo(display, { foreignKey : 'brandId', onUpdate : 'CASCADE', onDelete: 'CASCADE' });
             user.sync()
             .then(() => {
-                display.sync()
+                auth.sync()
                 .then(() => {
-                    item.sync()
+                    display.sync()
                     .then(() => {
-                      console.log(util.format('[Logger]::[Entity]::[Service]::[%s]::[Initialized]', moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')));
+                        item.sync()
+                        .then(() => {
+                        console.log(util.format('[Logger]::[Entity]::[Service]::[%s]::[Initialized]', moment().tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss')));
+                        });
                     });
                 });
             })

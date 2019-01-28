@@ -4,6 +4,8 @@ const http = require('http');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+const methodOverride = require('method-override');
 const moment = require('moment-timezone');
 const util = require('util');
 
@@ -12,8 +14,6 @@ const routeModule = require('./modules/routeModules');
 const entityModule = require('./modules/entityModule');
 
 global.app = new express();
-global.baseUrl = process.env.NODE_ENV === 'ec2' ? `http://ec2-18-225-32-252.us-east-2.compute.amazonaws.com:${config.server.port}`
-: `http://localhost:${config.server.port}`;
 
 function processRun() {
     (async () => {
@@ -21,6 +21,14 @@ function processRun() {
         app.use(bodyParser.json({limit: '15mb'}));
         app.use(bodyParser.urlencoded({ extended: true, limit: '15mb' }));
 
+        app.use(fileUpload({
+            limits: { fileSize: 15 * 1024 * 1024 },
+        }));
+        app.use(methodOverride());
+        app.use("/views", express.static(path.join(__dirname, "views")));
+        app.get("/admin", (req, res) => {
+            res.sendFile(__dirname + "/views/auth.html");
+        });
         entityModule.Init();
         routeModule.Init();
     })().then(_ => {

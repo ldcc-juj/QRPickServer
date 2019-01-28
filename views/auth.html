@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+	<title>대시보드</title>
+	<!-- CORE CSS-->
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/css/themes/fixed-menu/materialize.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/css/themes/fixed-menu/style.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/perfect-scrollbar/perfect-scrollbar.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/flag-icon/css/flag-icon.min.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/sweetalert/dist/sweetalert.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/jsgrid/css/jsgrid.min.css" type="text/css">
+    <link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/jsgrid/css/jsgrid-theme.min.css" type="text/css">
+    <link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/dropify/css/dropify.css" type="text/css" />
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="../views/vendors/materialize-admin/css/custom/custom.css" type="text/css" />
+</head>
+<body>
+	<!-- Start Page Loading -->
+	<div id="loader-wrapper">
+	  <div id="loader"></div>
+	  <div class="loader-section section-left"></div>
+	  <div class="loader-section section-right"></div>
+	</div>
+	<!-- End Page Loading -->
+	<!-- //////////////////////////////////////////////////////////////////////////// -->
+	<!-- START HEADER -->
+	<header id="header" class="page-topbar">
+	<!-- start header nav-->
+	<div class="navbar-fixed">
+	  <nav class="navbar-color">
+	    <div class="nav-wrapper">
+	      <ul class="left">
+	        <li>
+	          <h1 class="logo-wrapper">
+                    <a href="/admin" class="brand-logo darken-1">
+                        <img src="../views/images/logo.png" id="logo_img" alt="materialize logo">
+                    </a>
+	          </h1>
+	        </li>
+	      </ul>
+	      <div class="header-search-wrapper hide-on-med-and-down">
+	        <i class="material-icons">search</i>
+	        <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="검색" />
+	      </div>
+	      <ul class="right hide-on-med-and-down">
+	        <li>
+	          <a href="javascript:void(0);" class="waves-effect waves-block waves-light toggle-fullscreen">
+	            <i class="material-icons">settings_overscan</i>
+	          </a>
+	        </li>
+	        <li>
+	          <a href="javascript:void(0);" class="waves-effect waves-block waves-light notification-button" data-activates="notifications-dropdown">
+	            <i class="material-icons">notifications_none
+	              <small class="notification-badge pink accent-2">5</small>
+	            </i>
+	          </a>
+	        </li>
+	        <li>
+	          <a href="javascript:void(0);" class="waves-effect waves-block waves-light profile-button" data-activates="profile-dropdown">
+	            <i class="material-icons">format_indent_increase</i>
+	          </a>
+	        </li>
+	      </ul>
+	      <!-- notifications-dropdown -->
+	      <ul id="notifications-dropdown" class="dropdown-content">
+	        <li>
+	          <h6>NOTIFICATIONS
+	            <span class="new badge">5</span>
+	          </h6>
+	        </li>
+	        <li class="divider"></li>
+	        <li>
+	          <a href="#" class="grey-text text-darken-2">
+	            <span class="material-icons icon-bg-circle cyan small">add_shopping_cart</span> A new order has been placed!</a>
+	          <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">2 hours ago</time>
+	        </li>
+	        <li>
+	          <a href="#" class="grey-text text-darken-2">
+	            <span class="material-icons icon-bg-circle red small">stars</span> Completed the task</a>
+	          <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">3 days ago</time>
+	        </li>
+	        <li>
+	          <a href="#" class="grey-text text-darken-2">
+	            <span class="material-icons icon-bg-circle teal small">settings</span> Settings updated</a>
+	          <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">4 days ago</time>
+	        </li>
+	        <li>
+	          <a href="#" class="grey-text text-darken-2">
+	            <span class="material-icons icon-bg-circle deep-orange small">today</span> Director meeting started</a>
+	          <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">6 days ago</time>
+	        </li>
+	        <li>
+	          <a href="#!" class="grey-text text-darken-2">
+	            <span class="material-icons icon-bg-circle amber small">trending_up</span> Generate monthly report</a>
+	          <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">1 week ago</time>
+	        </li>
+	      </ul>
+	      <!-- profile-dropdown -->
+	      <ul id="profile-dropdown" class="dropdown-content">
+	        <li>
+	            <a href="#" class="grey-text text-darken-1">
+	            <i class="material-icons">face</i> 프로필 </a>
+	        </li>
+	        <li>
+	          <a href="#" class="grey-text text-darken-1">
+	            <i class="material-icons">settings</i> 설정 </a>
+	        </li>
+	        <li>
+	          <a href="#" class="grey-text text-darken-1">
+	            <i class="material-icons">live_help</i> 도움말 </a>
+	        </li>
+	        <li class="divider"></li>
+	        <li>
+	          <a href="#" class="grey-text text-darken-1">
+	            <i class="material-icons">keyboard_tab</i> 로그아웃 
+	          </a>
+	        </li>
+	      </ul>
+	    </div>
+	  </nav>
+	</div>
+	<!-- end header nav-->
+	</header>
+	<!-- END HEADER -->
+	<!-- //////////////////////////////////////////////////////////////////////////// -->
+	<!-- START MAIN -->
+	<div id="main">
+	  <!-- START WRAPPER -->
+	  <div class="wrapper">
+	    <!-- START LEFT SIDEBAR NAV-->
+			<div id="nav_section"></div>
+	    <!-- END LEFT SIDEBAR NAV-->
+	    <!-- //////////////////////////////////////////////////////////////////////////// -->
+	    <!-- START CONTENT -->
+	    <section id="content">
+	      <!--breadcrumbs start-->
+	      <div id="breadcrumbs-wrapper">
+	        <!-- Search for small screen -->
+	        <div class="header-search-wrapper grey lighten-2 hide-on-large-only">
+	          <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Explore Materialize">
+	        </div>
+	      </div>
+	      <!--breadcrumbs end-->
+	      <!--start container-->
+	      <div class="container">
+	        <div class="section">
+                    <div class="row">
+                        <div class="col s12 m6 l6">
+                                <div class="card">
+                                    <div class="card-move-up waves-effect waves-block waves-light">
+                                        <div class="move-up cyan darken-1">
+                                        <div>
+                                            <span class="chart-title white-text">월별 구매 추이</span>
+                                        </div>
+                                        <div class="trending-line-chart-wrapper">
+                                            <canvas id="trending-line-chart" height="70"></canvas>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+	        </div>
+	      </div>
+	      <!--end container-->
+	    </section>
+	    <!-- END CONTENT -->
+	    <!-- //////////////////////////////////////////////////////////////////////////// -->
+	  </div>
+	  <!-- END WRAPPER -->
+	</div>
+	<!-- END MAIN -->
+	<!-- //////////////////////////////////////////////////////////////////////////// -->
+	<!-- START FOOTER -->
+</body>
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/jquery-3.2.1.min.js"></script>
+<!--materialize js-->
+<script type="text/javascript" src="../views/vendors/materialize-admin/js/materialize.min.js"></script>
+<!--scrollbar-->
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<!-- chartjs -->
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/chartjs/chart.min.js"></script>
+<!--plugins.js - Some Specific JS codes for Plugin Settings-->
+<script type="text/javascript" src="../views/vendors/materialize-admin/js/plugins.js"></script>
+<!--custom-script.js - Add your own theme custom JS-->
+<script type="text/javascript" src="../views/vendors/materialize-admin/js/custom-script.js"></script>
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/jsgrid/js/jsgrid.min.js"></script>
+<script>
+	$(document).ready(function() {
+        $('#nav_section').load('../views/navbar/navbar.html');
+        $('#logo_img').css('height', $('header').height()+'px');
+	});
+</script>
+</html>
