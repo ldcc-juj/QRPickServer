@@ -5,7 +5,7 @@ const { user, display, item, auth } = require('../entity');
 const EntityModule = (function () {
     return {
         Init: function () {
-            item.belongsTo(display, { foreignKey : 'brand', onUpdate : 'CASCADE', onDelete: 'CASCADE' });
+            item.belongsTo(display, { foreignKey : 'brandId', onUpdate : 'CASCADE', onDelete: 'CASCADE' });
             user.sync()
             .then(() => {
                 auth.sync()

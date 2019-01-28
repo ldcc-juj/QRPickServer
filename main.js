@@ -25,7 +25,10 @@ function processRun() {
             limits: { fileSize: 15 * 1024 * 1024 },
         }));
         app.use(methodOverride());
-
+        app.use("/views", express.static(path.join(__dirname, "views")));
+        app.get("/admin", (req, res) => {
+            res.sendFile(__dirname + "/views/auth.html");
+        });
         entityModule.Init();
         routeModule.Init();
     })().then(_ => {

@@ -56,9 +56,11 @@ router.post('/detail', async (req, res) => {
         return go(
             options,
             itemModel.findOne,
-            data => data
-            ? respondJson(res, resultCode.success, data)
-            : respondOnError(res, resultCode.error, { desc: 'Not Found Item! Check Your URL Parameter!'})
+            data =>  {
+                data.dataValues
+                ? respondJson(res, resultCode.success, data.dataValues)
+                : respondOnError(res, resultCode.error, { desc: 'Not Found Item! Check Your URL Parameter!'})
+            }
         );
     }
     catch (error) {
