@@ -2,6 +2,7 @@ const express = require('express');
 const util = require('util');
 const moment = require('moment');
 const _ = require('lodash');
+const sequelize = require('sequelize');
 const router = express.Router();
 
 const config = require('../config');
@@ -44,7 +45,20 @@ router.post('/login', async (req, res) => {
     accountInfo = await go(
       options,
       userModel.find,
-      result => result.length > 0 ? result[0].dataValues : result
+      result => result.length > 0 ? result[0].dataValues : result,
+      result => {
+          if (result.id) {
+              userModel.update({ 
+                  data: {
+                      loginAt: sequelize.fn("NOW")
+                  },
+                  where: {
+                      id: result.id
+                  }
+              })
+          }
+          return result;
+      }
     );
 
     return !!accountInfo.id
@@ -76,6 +90,76 @@ router.post('/create', async (req, res) => {
           return !!result.dataValues
           ?   respondJson(res, resultCode.success, result.dataValues)
           :   respondOnError(res, resultCode.error, { desc: 'User Register Fail, Check Your Parameters!' })
+      }
+    );
+  } catch (error) {
+    return respondOnError(res, resultCode.error, error.message);
+  }
+});
+
+router.post('/update', async (req, res) => {
+  try {
+    const { userid, password, username, id } = req.body;
+
+    const options = {
+        data: {
+            userid: userid,
+            password: password,
+            username: username
+        },
+        where: {
+          id: id
+        }
+    };
+
+    return go(
+      options,
+      options => userModel.update(options).catch(e => { throw e }),
+      result => {
+          return result[0] > 0 
+          ?   respondJson(res, resultCode.success, { desc: 'User Update Success!' })
+          :   respondOnError(res, resultCode.error, { desc: 'User Update Fail, Check Your Parameters!' })
+      }
+    );
+  } catch (error) {
+    return respondOnError(res, resultCode.error, error.message);
+  }
+});
+
+router.post('/delete', async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    const options = {
+        where: {
+          id: id
+        }
+    };
+
+    return go(
+      options,
+      options => userModel.delete(options).catch(e => { throw e }),
+      result => {
+          return result > 0 
+          ?   respondJson(res, resultCode.success, { desc: 'User Delete Success!' })
+          :   respondOnError(res, resultCode.error, { desc: 'User Update Fail, Check Your Parameters!' })
+      }
+    );
+  } catch (error) {
+    return respondOnError(res, resultCode.error, error.message);
+  }
+});
+
+router.post('/list', async (req, res) => {
+  try {
+
+    return go(
+      _,
+      _ => userModel.find().catch(e => { throw e }),
+      result => {
+          return !!result
+          ?   respondJson(res, resultCode.success, result)
+          :   respondOnError(res, resultCode.error, { desc: 'User List Fail, Check Your Parameters!' })
       }
     );
   } catch (error) {

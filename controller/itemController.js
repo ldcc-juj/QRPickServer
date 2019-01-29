@@ -71,7 +71,7 @@ router.post('/detail', async (req, res) => {
 router.post('/create', async (req, res) => {
     try {
         const fileName = req.files ? req.files.image.name : false;
-        const { modelNumber, category, price, name, discountPrice, brandId, amount, information, image } = req.body;
+        const { modelNumber = "미입력", category = "미정", price = 0, name, discountPrice, brandId, amount, information, image } = req.body;
         const data = {
             modelNumber: modelNumber,
             category: category,

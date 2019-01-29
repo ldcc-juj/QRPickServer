@@ -25,105 +25,7 @@
 	</div>
 	<!-- End Page Loading -->
 	<!-- //////////////////////////////////////////////////////////////////////////// -->
-	<!-- START HEADER -->
-	<header id="header" class="page-topbar">
-	<!-- start header nav-->
-	<div class="navbar-fixed">
-	  <nav class="navbar-color">
-	    <div class="nav-wrapper">
-	      <ul class="left">
-	        <li>
-	          <h1 class="logo-wrapper">
-                    <a href="/admin" class="brand-logo darken-1">
-                        <img src="../views/images/logo.png" id="logo_img" alt="materialize logo">
-                    </a>
-	          </h1>
-	        </li>
-	      </ul>
-	      <div class="header-search-wrapper hide-on-med-and-down">
-	        <i class="material-icons">search</i>
-	        <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="검색" />
-	      </div>
-	      <ul class="right hide-on-med-and-down">
-	        <li>
-	          <a href="javascript:void(0);" class="waves-effect waves-block waves-light toggle-fullscreen">
-	            <i class="material-icons">settings_overscan</i>
-	          </a>
-	        </li>
-	        <li>
-	          <a href="javascript:void(0);" class="waves-effect waves-block waves-light notification-button" data-activates="notifications-dropdown">
-	            <i class="material-icons">notifications_none
-	              <small class="notification-badge pink accent-2">5</small>
-	            </i>
-	          </a>
-	        </li>
-	        <li>
-	          <a href="javascript:void(0);" class="waves-effect waves-block waves-light profile-button" data-activates="profile-dropdown">
-	            <i class="material-icons">format_indent_increase</i>
-	          </a>
-	        </li>
-	      </ul>
-	      <!-- notifications-dropdown -->
-	      <ul id="notifications-dropdown" class="dropdown-content">
-	        <li>
-	          <h6>NOTIFICATIONS
-	            <span class="new badge">5</span>
-	          </h6>
-	        </li>
-	        <li class="divider"></li>
-	        <li>
-	          <a href="#" class="grey-text text-darken-2">
-	            <span class="material-icons icon-bg-circle cyan small">add_shopping_cart</span> A new order has been placed!</a>
-	          <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">2 hours ago</time>
-	        </li>
-	        <li>
-	          <a href="#" class="grey-text text-darken-2">
-	            <span class="material-icons icon-bg-circle red small">stars</span> Completed the task</a>
-	          <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">3 days ago</time>
-	        </li>
-	        <li>
-	          <a href="#" class="grey-text text-darken-2">
-	            <span class="material-icons icon-bg-circle teal small">settings</span> Settings updated</a>
-	          <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">4 days ago</time>
-	        </li>
-	        <li>
-	          <a href="#" class="grey-text text-darken-2">
-	            <span class="material-icons icon-bg-circle deep-orange small">today</span> Director meeting started</a>
-	          <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">6 days ago</time>
-	        </li>
-	        <li>
-	          <a href="#!" class="grey-text text-darken-2">
-	            <span class="material-icons icon-bg-circle amber small">trending_up</span> Generate monthly report</a>
-	          <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">1 week ago</time>
-	        </li>
-	      </ul>
-	      <!-- profile-dropdown -->
-	      <ul id="profile-dropdown" class="dropdown-content">
-	        <li>
-	            <a href="#" class="grey-text text-darken-1">
-	            <i class="material-icons">face</i> 프로필 </a>
-	        </li>
-	        <li>
-	          <a href="#" class="grey-text text-darken-1">
-	            <i class="material-icons">settings</i> 설정 </a>
-	        </li>
-	        <li>
-	          <a href="#" class="grey-text text-darken-1">
-	            <i class="material-icons">live_help</i> 도움말 </a>
-	        </li>
-	        <li class="divider"></li>
-	        <li>
-	          <a href="#" class="grey-text text-darken-1">
-	            <i class="material-icons">keyboard_tab</i> 로그아웃 
-	          </a>
-	        </li>
-	      </ul>
-	    </div>
-	  </nav>
-	</div>
-	<!-- end header nav-->
-	</header>
-	<!-- END HEADER -->
+	<div id="headerSection"></div>
 	<!-- //////////////////////////////////////////////////////////////////////////// -->
 	<!-- START MAIN -->
 	<div id="main">
@@ -135,34 +37,129 @@
 	    <!-- //////////////////////////////////////////////////////////////////////////// -->
 	    <!-- START CONTENT -->
 	    <section id="content">
-	      <!--breadcrumbs start-->
-	      <div id="breadcrumbs-wrapper">
-	        <!-- Search for small screen -->
-	        <div class="header-search-wrapper grey lighten-2 hide-on-large-only">
-	          <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Explore Materialize">
-	        </div>
-	      </div>
-	      <!--breadcrumbs end-->
 	      <!--start container-->
 	      <div class="container">
 	        <div class="section">
-                    <div class="row">
-                        <div class="col s12 m6 l6">
-                                <div class="card">
-                                    <div class="card-move-up waves-effect waves-block waves-light">
-                                        <div class="move-up cyan darken-1">
-                                        <div>
-                                            <span class="chart-title white-text">월별 구매 추이</span>
-                                        </div>
-                                        <div class="trending-line-chart-wrapper">
-                                            <canvas id="trending-line-chart" height="70"></canvas>
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-	        </div>
+							<div class="row">
+									<div class="col s12 m6 l6">
+											<div class="card">
+													<div class="card-move-up waves-effect waves-block waves-light" id="UserList">
+															<div class="move-up">
+																<div style="margin-bottom: 1rem;">
+																		<span class="chart-title">User List</span>
+																		<div class="chart-revenue" style="padding: 0 !important;">
+																			<i class="material-icons">add</i>
+																		</div>
+																</div>
+																<div class="trending-line-chart-wrapper">
+																	<table class="centered">
+																		<thead>
+																			<tr>
+																					<th>User Name</th>
+																					<th>User ID</th>
+																					<th>Password</th>
+																					<th>Last Logined</th>
+																			</tr>
+																		</thead>
+																		<tbody id="userInfoSection">
+																		</tbody>
+																	</table>
+																</div>
+															</div>
+													</div>
+											</div>
+									</div>
+									<div class="col s12 m6 l6">
+										<div class="card">
+												<div class="card-move-up waves-block waves-light" id="DisplayList">
+													<div class="move-up cyan darken-1">
+														<div style="margin-bottom: 1rem;">
+																<span class="chart-title white-text">Display List</span>
+																<div class="chart-revenue cyan darken-1 white-text" style="padding: 0 !important;">
+																	<i class="material-icons">add</i>
+																</div>
+														</div>
+														<div class="trending-line-chart-wrapper white-text">
+															<table class="centered">
+																<thead>
+																	<tr>
+																			<th>Branch</th>
+																			<th>Brand</th>
+																			<th>Location</th>
+																			<th>Image</th>
+																	</tr>
+																</thead>
+																<tbody id="displayInfoSection">
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+										</div>
+										<!-- Modal Structure -->
+										<div id="modal1" class="modal">
+											<div class="modal-content">
+												<h5></h5>
+												<p>
+													<div class="row center-align">
+														<div class="col s12 m12 l12">
+															<img id="thumnail" width="200" />
+														</div>
+														<div class="col s12 m12 l12 comments">
+															<p></p>
+														</div>
+													</div>
+												</p>
+											</div>
+											<div class="modal-footer">
+												<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">확인</a>
+											</div>
+										</div>
+									</div>
+									<div class="col s12 m12 l12">
+										<div class="card">
+											<div class="card-move-up waves-effect waves-block waves-light" id="ItemList">
+													<div class="move-up teal lighten-1 mainpage-item">
+														<div style="margin-bottom: 1rem;">
+																<span class="chart-title white-text">Item List</span>
+																<div class="chart-revenue teal lighten-1 white-text" style="padding: 0 !important;">
+																	<i class="material-icons">add</i>
+																</div>
+														</div>
+														<div class="input-field col s12 m6 l6 white-text">
+															<select id="displaySelected" class="white-text">
+																<option value="" disabled selected>매대 선택</option>
+															</select>
+															<label class="white-text">Display Select</label>
+														</div>
+														<div class="trending-line-chart-wrapper white-text">
+															<table class="centered">
+																<thead>
+																	<tr>
+																			<th>Model Number</th>
+																			<th>Category</th>
+																			<th>Price</th>
+																			<th>Name</th>
+																			<th>Discount Price</th>
+																			<th>Display</th>
+																			<th>Amount</th>
+																			<th>Image</th>
+																			<th>Others</th>
+																	</tr>
+																</thead>
+																<tbody id="itemInfoSection">
+																</tbody>
+															</table>
+															<div id="noItem" class="center-align" style="display: block; margin: 2rem 0;">
+																매대를 선택하세요.
+															</div>
+														</div>
+													</div>
+											</div>
+										</div>
+									</div>
+							</div>
+					</div>
 	      </div>
 	      <!--end container-->
 	    </section>
@@ -189,9 +186,164 @@
 <script type="text/javascript" src="../views/vendors/materialize-admin/vendors/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript" src="../views/vendors/materialize-admin/vendors/jsgrid/js/jsgrid.min.js"></script>
 <script>
+	function setSize (size) {
+		switch (size.toUpperCase()) {
+			case  "XS" || "X-SMALL": return {height: '50px', width: '50px'};
+			case  "S" || "SMALL": return {height: '100px', width: '100px'};
+			case  "M" || "MEDIUM": return {height: '150px', width: '150px'};
+			case  "L" || "LARGE": return {height: '200px', width: '200px'};
+			case  "XL" || "X-LARGE": return {height: '250px', width: '250px'};
+		}
+	}
+	function ColorSet (color) {
+		switch (color) {
+			case "red": return 'red';
+			case "ivory": return 'grey lighten-5';
+			case "white": return 'white';
+			case "green": return "green";
+			case "navy": return "indigo darken-4";
+			case "blue": return "blue";
+		}
+	}
+
+
+	function FontColor (color) {
+		switch (color) {
+			case "red": return 'white-text';
+			case "ivory": return '';
+			case "white": return '';
+			case "green": return "white-text";
+			case "navy": return "white-text";
+			case "blue": return "white-text";
+		}
+	}
+
+	var DetailClickEvent = function (className) {
+		function setThumbnail (url) {
+			$('.modal-content h5').text('이미지 미리보기');
+			if (!url) {
+				$('#thumnail').attr('src', 'http://placehold.it/300x300');
+				$('.comments p').text('등록된 대표 이미지가 없습니다.');
+			} else {
+				$('#thumnail').attr('src', url);
+				$('.comments p').text('');
+			}
+			$('#modal1').modal('open');
+		}
+
+		function setJsonParsing (jsonStr) {
+			var toJson = JSON.parse(jsonStr);
+			$('.modal-content h5').text('상품 정보');
+			$('.comments p').empty();
+			$('#thumnail').removeAttr('src');
+			if (toJson.color) {
+				var colorCard = '<div class=\"row\"><div class=\"col s12 m12\"><div class=\"card-panel '+ColorSet(toJson.color)+'\"><span class=\"'+FontColor(toJson.color)+'\"><strong style=\"font-weight: bold;\">색상 - '+toJson.color+'</strong></span></div></div></div>';
+				$('.comments p').html(colorCard);
+			}
+			if (toJson.size) {
+				var p = document.createElement("p");
+				$('.comments p').append(p);
+				var size = setSize(toJson.size);
+				$('.comments p p').append('<div class=\"row\"><div class=\"col s12 m12 center-align\"><div class=\"card-panel valign-wrapper center-align\" style=\"width:'+size.width+'; height:'+size.height+'\">사이즈 - '+toJson.size.toUpperCase()+'</div>');
+			}
+			$('#modal1').modal('open');
+		}
+
+		$('.'+className).off().on('click', function () {
+			className !== 'itemInfoDetailBtn'
+			? setThumbnail($(this).attr('id'))
+			: setJsonParsing($(this).attr('id'))
+		});
+	};
+
+	var selectEvent = function () {
+		$('#displaySelected').on('change', async function () {
+			var SelectedValue = await $("option:selected", this);
+
+			await $.ajax({
+				method: "POSt",
+				url: "/item/list",
+				data: {
+					brandId: Number(SelectedValue.val())
+				},
+				success: function (itemlist) {
+					if (itemlist.data.length < 1) {
+						$('#itemInfoSection tr').remove();
+						$('#noItem').text('해당 매대에 등록된 상품이 없습니다.').css('display', 'block');
+					} else {
+						$('#noItem').css('display', 'none');
+					}
+
+					itemlist.data.forEach((item, index) => {
+						if (index > 5) {
+							return;
+						}
+
+						$('#itemInfoSection').append($('<tr />', {
+							id: 'itemTr_'+item.id
+						}));
+
+						$('#itemTr_'+item.id).append('<td>'+item.modelNumber+'</td><td>'+item.category+'</td><td>'+item.price+'</td><td>'+item.name+'</td><td>'+item.discountPrice+'</td><td>'+SelectedValue.text()+'</td><td>'+item.amount+'</td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemDetailBtn" id=\"'+item.imageUrl+'\">미리보기</a></td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemInfoDetailBtn" id='+item.information+'>상세</a></td>');
+					});
+					DetailClickEvent('itemDetailBtn');
+					DetailClickEvent('itemInfoDetailBtn');
+				}
+			});
+		});
+	};
+
 	$(document).ready(function() {
-        $('#nav_section').load('../views/navbar/navbar.html');
-        $('#logo_img').css('height', $('header').height()+'px');
+		$('.modal').modal();
+		$('#nav_section').load('../views/navbar/navbar.html');
+		$('#headerSection').load('../views/header/header.html');
+
+		$.ajax({
+			method: "POST",
+			url: "/user/list",
+			success: function (userlist) {
+				userlist.data.forEach((user, index) => {
+					if (index > 5) {
+						return;
+					}
+					$('#userInfoSection').append($('<tr />', {
+						id: 'userTr_'+user.id
+					}));
+
+					$('#userTr_'+user.id).append('<td>'+user.username+'</td><td>'+user.userid+'</td><td>'+user.password+'</td><td>'+(() => (user.loginAt ? user.loginAt.substring(0, 10) : "미접속"))()+'</td>');
+				});
+			}
+		});
+
+		$.ajax({
+			method: "GET",
+			url: "/display/list",
+			success: function (displaylist) {
+				displaylist.data.forEach((display, index) => {
+
+					$('#displaySelected').append($('<option/>', {
+						value: display.id,
+						id: 'display_'+display.id,
+						'data-icon': display.imageUrl ? display.imageUrl : "../views/vendors/materialize-admin/images/avatar/avatar-7.png",
+						class: 'circle'
+					}));
+
+					$('#display_'+display.id).text(display.branch+' > '+display.brand);
+
+					if (index > 5) {
+						return;
+					}
+					
+					$('#displayInfoSection').append($('<tr />', {
+						id: 'displayTr_'+display.id
+					}));
+
+					$('#displayTr_'+display.id).append('<td>'+display.branch+'</td><td>'+display.brand+'</td><td>'+display.location+'</td><td><a class="waves-effect waves-light btn-flat btn-small white-text displayDetailBtn" id=\"'+display.imageUrl+'\">미리보기</a></td>');
+				});
+				DetailClickEvent('displayDetailBtn');
+				selectEvent();
+				$('select').material_select();
+			}
+		});
 	});
 </script>
 </html>

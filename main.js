@@ -26,8 +26,22 @@ function processRun() {
         }));
         app.use(methodOverride());
         app.use("/views", express.static(path.join(__dirname, "views")));
+        app.use("/assets", express.static(path.join(__dirname, "assets")));
+
         app.get("/admin", (req, res) => {
             res.sendFile(__dirname + "/views/auth.html");
+        });
+
+        app.get("/userlist", (req, res) => {
+            res.sendFile(__dirname + "/views/UserList/userList.html");
+        });
+
+        app.get("/displaylist", (req, res) => {
+            res.sendFile(__dirname + "/views/DisplayList/displayList.html");
+        });
+
+        app.get("/itemlist", (req, res) => {
+            res.sendFile(__dirname + "/views/ItemList/itemList.html");
         });
         entityModule.Init();
         routeModule.Init();

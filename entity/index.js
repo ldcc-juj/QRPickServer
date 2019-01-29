@@ -5,6 +5,7 @@ const user = sequelizeInstance.define('user', {
     userid: { type: sequelize.STRING(200), allowNull: false }, // 아이디
     password: { type: sequelize.STRING(255), allowNull: false }, // 패스워드
     username: { type: sequelize.STRING(30), allowNull: false }, // 사용자명
+    loginAt: { type: sequelize.DATE, allowNull: true }, // 최근 로그인 시간
 },
 {
     charset: 'utf8',

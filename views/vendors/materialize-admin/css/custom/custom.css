@@ -18,3 +18,41 @@ header .brand-logo img {
 	padding: 0.2rem !important;
     margin: 0.5rem 1rem !important;
 }
+
+select{
+	position:absolute;
+	z-index: 1000;
+}
+
+.mainpage-item .select-wrapper {
+	margin-bottom: 2rem;
+}
+
+.mainpage-item .select-wrapper .caret {
+	color: white !important;
+}
+
+.mainpage-item .select-wrapper .select-dropdown {
+	border-bottom: 1px solid #fff !important;
+}
+
+.modal {
+	max-width: 45%;
+	width: 45%;
+}
+
+.collection li .title {
+	font-weight: bold;
+	margin: 0.5rem 0;
+    display: block;
+}
+
+.not {
+	text-decoration: line-through;
+}
+
+.highlight {
+	font-size: 1.5rem;
+	color: #ef5350;
+	font-weight: bold;
+}

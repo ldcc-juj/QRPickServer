@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+	<title>상품 관리</title>
+	<!-- CORE CSS-->
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/css/themes/fixed-menu/materialize.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/css/themes/fixed-menu/style.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/perfect-scrollbar/perfect-scrollbar.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/flag-icon/css/flag-icon.min.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/sweetalert/dist/sweetalert.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/jsgrid/css/jsgrid.min.css" type="text/css">
+    <link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/jsgrid/css/jsgrid-theme.min.css" type="text/css">
+    <link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/dropify/css/dropify.css" type="text/css" />
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="../views/vendors/materialize-admin/css/custom/custom.css" type="text/css" />
+</head>
+<body>
+	<!-- Start Page Loading -->
+	<div id="loader-wrapper">
+	  <div id="loader"></div>
+	  <div class="loader-section section-left"></div>
+	  <div class="loader-section section-right"></div>
+	</div>
+	<!-- End Page Loading -->
+	<!-- //////////////////////////////////////////////////////////////////////////// -->
+	<div id="headerSection"></div>
+    <!-- //////////////////////////////////////////////////////////////////////////// -->
+	<!-- START MAIN -->
+	<div id="main">
+	  <!-- START WRAPPER -->
+	  <div class="wrapper">
+	    <!-- START LEFT SIDEBAR NAV-->
+		<div id="nav_section"></div>
+	    <!-- END LEFT SIDEBAR NAV-->
+        <!-- //////////////////////////////////////////////////////////////////////////// -->
+        <nav>
+            <div class="nav-wrapper cyan darken-2">
+                <div class="row">
+                    <div class="col s12">
+                    <a href="/admin" class="breadcrumb">Dashboard</a>
+                    <a href="/itemlist" class="breadcrumb">Item List</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+	    <!-- START CONTENT -->
+	    <section id="content">
+	      <!--start container-->
+	      <div class="container">
+	        <div class="section">
+							<div class="row"></div>
+                                    <div class="input-field col s6 m6 l6">
+                                        <select id="displaySelected">
+                                            <option value="" disabled selected>매대 선택</option>
+                                        </select>
+                                        <label>Display Select</label>
+                                    </div>
+									<div class="col s12 m12 l12">
+                                        <ul class="collection"></ul>
+                                        <!-- Modal Structure -->
+										<div id="modal1" class="modal">
+                                            <div class="modal-content">
+                                                <h5>대표 이미지 미리보기</h5>
+                                                <p>
+                                                    <div class="row center-align">
+                                                        <div class="col s12 m12 l12">
+                                                            <img id="thumnail" width="200" />
+                                                        </div>
+                                                        <div class="col s12 m12 l12 comments">
+                                                            <p></p>
+                                                        </div>
+                                                    </div>
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">확인</a>
+                                            </div>
+                                        </div>
+									</div>
+							</div>
+					</div>
+	      </div>
+	      <!--end container-->
+	    </section>
+	    <!-- END CONTENT -->
+	    <!-- //////////////////////////////////////////////////////////////////////////// -->
+	  </div>
+	  <!-- END WRAPPER -->
+	</div>
+	<!-- END MAIN -->
+	<!-- //////////////////////////////////////////////////////////////////////////// -->
+	<!-- START FOOTER -->
+</body>
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/jquery-3.2.1.min.js"></script>
+<!--materialize js-->
+<script type="text/javascript" src="../views/vendors/materialize-admin/js/materialize.min.js"></script>
+<!--scrollbar-->
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<!-- chartjs -->
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/chartjs/chart.min.js"></script>
+<!--plugins.js - Some Specific JS codes for Plugin Settings-->
+<script type="text/javascript" src="../views/vendors/materialize-admin/js/plugins.js"></script>
+<!--custom-script.js - Add your own theme custom JS-->
+<script type="text/javascript" src="../views/vendors/materialize-admin/js/custom-script.js"></script>
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/jsgrid/js/jsgrid.min.js"></script>
+<script>
+    function addUpdateBtnEvent () {
+        $('.updateDisplayBtn').off().on('click', function () {
+            $('#modal1').modal('open');
+        });
+    }
+
+    var selectEvent = function () {
+		$('#displaySelected').on('change', async function () {
+			var SelectedValue = await $("option:selected", this);
+
+			await $.ajax({
+				method: "POSt",
+				url: "/item/list",
+				data: {
+					brandId: Number(SelectedValue.val())
+				},
+				success: function (itemlist) {
+					if (itemlist.data.length < 1) {
+						$('.collection').html('<li>해당 매대에 등록된 상품이 없습니다.</li>');
+                    }
+                    
+                    $('.collection').empty();
+
+					itemlist.data.forEach((item, index) => {
+						$('.collection').append($('<li />', {
+                            class: 'collection-item avatar',
+                            id: 'li_'+item.id
+                        }));
+
+                        $('#li_'+item.id).append($('<img />', {
+                            src: item.imageUrl ? item.imageUrl : 'https://pixinvent.com/materialize-material-design-admin-template/images/logo/materialize-logo.png',
+                            class: 'circle'
+                        }));
+
+                        $('#li_'+item.id).append($('<span />', {
+                            class: 'title'
+                        }));
+
+                        $('#li_'+item.id).append($('<p />', {
+                            class: 'information'
+                        }));
+
+                        $('#li_'+item.id).append($('<a />', {
+                            class: 'secondary-content'
+                        }));
+
+                        $('#li_'+item.id+' span').text('['+item.modelNumber+']\t'+item.name);
+
+                        $('#li_'+item.id+' p').html('분류 | '+item.category+'<br>가격&nbsp;|&nbsp;<span class=\"'+((isSale) => { return isSale ? 'not' :'highlight' })(item.discountPrice)+'\">'+item.price+'원&nbsp;</span><i class=\"material-icons\" style=\"font-size: 1rem;\">trending_flat</i>&nbsp;<span class=\"highlight\">'+item.discountPrice+'원</span>');
+                        
+                        $('#li_'+item.id+' a').html('<i class=\"material-icons\">cancel</i>');
+                    });
+				}
+			});
+		});
+	};
+
+    $(document).ready(function () {
+        $('.modal').modal();
+        $('#nav_section').load('../views/navbar/navbar.html');
+        $('#headerSection').load('../views/header/header.html');
+        $.ajax({
+			method: "GET",
+			url: "/display/list",
+			success: function (displaylist) {
+				displaylist.data.forEach((display, index) => {
+					$('#displaySelected').append($('<option/>', {
+						value: display.id,
+						id: 'display_'+display.id,
+						'data-icon': display.imageUrl ? display.imageUrl : "../views/vendors/materialize-admin/images/avatar/avatar-7.png",
+						class: 'circle'
+					}));
+
+                    $('#display_'+display.id).text(display.branch+' > '+display.brand);
+                });
+				selectEvent();
+				$('select').material_select();
+			}
+		});
+    });
+</script>

@@ -15,6 +15,9 @@ const userModel = (function () {
       return await user.findOne(options);
     },
     find: async function (options) {
+      if (!options) {
+        return await user.findAll();
+      } 
       return await user.findAll(options);
     },
     delete: async function(options) {

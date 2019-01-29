@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+	<title>매대 관리</title>
+	<!-- CORE CSS-->
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/css/themes/fixed-menu/materialize.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/css/themes/fixed-menu/style.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/perfect-scrollbar/perfect-scrollbar.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/flag-icon/css/flag-icon.min.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/sweetalert/dist/sweetalert.css" type="text/css" />
+	<link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/jsgrid/css/jsgrid.min.css" type="text/css">
+    <link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/jsgrid/css/jsgrid-theme.min.css" type="text/css">
+    <link rel="stylesheet" href="../views/vendors/materialize-admin/vendors/dropify/css/dropify.css" type="text/css" />
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="../views/vendors/materialize-admin/css/custom/custom.css" type="text/css" />
+</head>
+<body>
+	<!-- Start Page Loading -->
+	<div id="loader-wrapper">
+	  <div id="loader"></div>
+	  <div class="loader-section section-left"></div>
+	  <div class="loader-section section-right"></div>
+	</div>
+	<!-- End Page Loading -->
+	<!-- //////////////////////////////////////////////////////////////////////////// -->
+	<div id="headerSection"></div>
+    <!-- //////////////////////////////////////////////////////////////////////////// -->
+	<!-- START MAIN -->
+	<div id="main">
+	  <!-- START WRAPPER -->
+	  <div class="wrapper">
+	    <!-- START LEFT SIDEBAR NAV-->
+		<div id="nav_section"></div>
+	    <!-- END LEFT SIDEBAR NAV-->
+        <!-- //////////////////////////////////////////////////////////////////////////// -->
+        <nav>
+            <div class="nav-wrapper cyan darken-2">
+                <div class="row">
+                    <div class="col s12">
+                    <a href="/admin" class="breadcrumb">Dashboard</a>
+                    <a href="/displaylist" class="breadcrumb">Display List</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+	    <!-- START CONTENT -->
+	    <section id="content">
+	      <!--start container-->
+	      <div class="container">
+	        <div class="section">
+							<div class="row">
+									<div class="col s12 m12 l12">
+                                        <div class="row" id="cardSection">
+                                        </div>
+                                        <!-- Modal Structure -->
+										<div id="modal1" class="modal">
+                                            <div class="modal-content">
+                                                <h5>대표 이미지 미리보기</h5>
+                                                <p>
+                                                    <div class="row center-align">
+                                                        <div class="col s12 m12 l12">
+                                                            <img id="thumnail" width="200" />
+                                                        </div>
+                                                        <div class="col s12 m12 l12 comments">
+                                                            <p></p>
+                                                        </div>
+                                                    </div>
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">확인</a>
+                                            </div>
+                                        </div>
+									</div>
+							</div>
+					</div>
+	      </div>
+	      <!--end container-->
+	    </section>
+	    <!-- END CONTENT -->
+	    <!-- //////////////////////////////////////////////////////////////////////////// -->
+	  </div>
+	  <!-- END WRAPPER -->
+	</div>
+	<!-- END MAIN -->
+	<!-- //////////////////////////////////////////////////////////////////////////// -->
+	<!-- START FOOTER -->
+</body>
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/jquery-3.2.1.min.js"></script>
+<!--materialize js-->
+<script type="text/javascript" src="../views/vendors/materialize-admin/js/materialize.min.js"></script>
+<!--scrollbar-->
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<!-- chartjs -->
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/chartjs/chart.min.js"></script>
+<!--plugins.js - Some Specific JS codes for Plugin Settings-->
+<script type="text/javascript" src="../views/vendors/materialize-admin/js/plugins.js"></script>
+<!--custom-script.js - Add your own theme custom JS-->
+<script type="text/javascript" src="../views/vendors/materialize-admin/js/custom-script.js"></script>
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/jsgrid/js/jsgrid.min.js"></script>
+<script>
+    function addUpdateBtnEvent () {
+        $('.updateDisplayBtn').off().on('click', function () {
+            $('#modal1').modal('open');
+        });
+    }
+
+    $(document).ready(function () {
+        $('.modal').modal();
+        $('#nav_section').load('../views/navbar/navbar.html');
+        $('#headerSection').load('../views/header/header.html');
+        $.ajaxSettings.async = false;
+        var ListArr = [];
+        $.ajax({
+            method: "GET",
+            url: "/display/list",
+            success: function(displaylist){
+                displaylist.data.forEach((display, index) => {
+                    $('#cardSection').append($('<div />', {
+                        class: "col s6 m4 l3",
+                        id: 'col_'+index
+                    }));
+
+                    $('#col_'+index).append($('<div />', {
+                        class: 'card',
+                        id: 'card_'+index
+                    }));
+
+                    $('#card_'+index).append($('<div />', {
+                        class: 'card-image',
+                        id: 'card-image-'+index
+                    }));
+
+                    $('#card_'+index).append($('<div />', {
+                        class: 'card-content center-align',
+                        id: 'card-content-'+index
+                    }));
+
+                    $('#card-image-'+index).append('<img class=\"display_img\" src=\"'+(() => { return display.imageUrl ? display.imageUrl : 'http://placehold.it/300x300' })()+'\" /><span class="card-title">'+display.branch+'</span>');
+                    $('#card-image-'+index).append('<a class=\"btn-floating btn-large halfway-fab waves-effect waves-light red updateDisplayBtn\" id=\"'+display.id+'\"><i class=\"material-icons\">edit</i></a>');
+                    $('#card-content-'+index).append('<p>'+display.brand+'</p><div class=\"divider\" style=\"margin: 0.5rem;\"></div><p>'+display.location+'</p>');
+                });
+
+                addUpdateBtnEvent();
+            }
+        });
+    });
+</script>
