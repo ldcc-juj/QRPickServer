@@ -6,5 +6,6 @@ const defaults = {
 };
 
 module.exports = {
-    development: Object.assign({}, development, defaults)
+    development: Object.assign({}, development, defaults),
+    ec2: Object.assign({}, development, defaults),
 }[process.env.NODE_ENV || 'development']
