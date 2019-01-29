@@ -174,15 +174,16 @@ router.post('/delete', async (req, res) => {
 
         return await go(
             options,
-            displayModel.find,
+            options => displayModel.findOne(options),
             result => {
-                if (result[0]) {
-                    if (result[0].imagePath) {
-                        deleteFile(result[0].imagePath);
+                if (result.dataValues) {
+                    if (result.dataValues.imagePath) {
+                        deleteFile(result.dataValues.imagePath);
                     };
+                    console.log(result.dataValues.id);
                     return {
                         where: {
-                            id: result[0].id
+                            id: result.dataValues.id
                         }
                     };
                 } else {

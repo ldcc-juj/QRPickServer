@@ -80,7 +80,7 @@ router.post('/create', async (req, res) => {
             discountPrice: discountPrice,
             brandId: brandId,
             amount: amount,
-            information: (!!information && information instanceof Object) ? information : JSON.parse(information),
+            information: (information instanceof Object) ? information : information ? JSON.parse(information) : null,
             imagePath: '',
             imageUrl: (image && image instanceof String) ? image : ''
         };
