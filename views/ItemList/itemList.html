@@ -58,7 +58,12 @@
                                         <label>Display Select</label>
                                     </div>
 									<div class="col s12 m12 l12">
-                                        <ul class="collection"></ul>
+                                        <ul class="collection" style="display: none;"></ul>
+                                        <div class="row center-align">
+                                            <div id="notices" class="col s12 m12 l12" style="margin: 2rem 0;">
+                                                <strong style="font-weight: bold;">상품을 조회할 매대를 선택하세요.</strong>
+                                            </div>
+                                        </div>
                                         <!-- Modal Structure -->
 										<div id="modal1" class="modal">
                                             <div class="modal-content">
@@ -125,7 +130,14 @@
 				},
 				success: function (itemlist) {
 					if (itemlist.data.length < 1) {
-						$('.collection').html('<li>해당 매대에 등록된 상품이 없습니다.</li>');
+                        $('.collection').css('display', 'none');
+                        $('#notices').siblings('.row').remove();
+						$('#notices').css('display', 'block').html('<strong style=\"font-weight: bold;\">해당 매대에 등록된 상품이 없습니다.</strong>');
+                        $('#notices').after('<div class="row center-align"><div class="col s12 m12 l12"><a class="waves-effect waves-light btn" id="addNewItemBtn"><i class="material-icons right">add</i> 상품 추가</a></div></div>');
+                    } else {
+                        $('#notices').css('display', 'none');
+                        $('#notices').siblings('.row').remove();
+                        $('.collection').css('display', 'block');
                     }
                     
                     $('.collection').empty();
@@ -150,14 +162,16 @@
                         }));
 
                         $('#li_'+item.id).append($('<a />', {
-                            class: 'secondary-content'
+                            class: 'secondary-content',
+                            id: 'deleteBtn'
                         }));
 
                         $('#li_'+item.id+' span').text('['+item.modelNumber+']\t'+item.name);
 
                         $('#li_'+item.id+' p').html('분류 | '+item.category+'<br>가격&nbsp;|&nbsp;<span class=\"'+((isSale) => { return isSale ? 'not' :'highlight' })(item.discountPrice)+'\">'+item.price+'원&nbsp;</span><i class=\"material-icons\" style=\"font-size: 1rem;\">trending_flat</i>&nbsp;<span class=\"highlight\">'+item.discountPrice+'원</span>');
                         
-                        $('#li_'+item.id+' a').html('<i class=\"material-icons\">cancel</i>');
+                        $('#li_'+item.id+' a#deleteBtn').addClass('waves-effect waves-light').html('<i class=\"material-icons\">queue</i>');
+                        $('#notices').after('<div class="row center-align"><div class="col s12 m12 l12"><a class="waves-effect waves-light btn" id="addNewItemBtn"><i class="material-icons right">add</i> 상품 추가</a></div></div>');
                     });
 				}
 			});

@@ -56,3 +56,9 @@ select{
 	color: #ef5350;
 	font-weight: bold;
 }
+
+#thumnail {
+	border: 3px solid #26a69a;
+    border-radius: 0.2rem;
+    box-shadow: 0 3px 4px 2px #e0e0e0;
+}

@@ -188,33 +188,54 @@
 <script>
 	function setSize (size) {
 		switch (size.toUpperCase()) {
-			case  "XS" || "X-SMALL": return {height: '50px', width: '50px'};
-			case  "S" || "SMALL": return {height: '100px', width: '100px'};
-			case  "M" || "MEDIUM": return {height: '150px', width: '150px'};
-			case  "L" || "LARGE": return {height: '200px', width: '200px'};
-			case  "XL" || "X-LARGE": return {height: '250px', width: '250px'};
+			case "85":
+			case  "XS": return {height: '50px', width: '50px'};
+			case "90":
+			case  "S": return {height: '100px', width: '100px'};
+			case "95":
+			case  "M": return {height: '150px', width: '150px'};
+			case "100":
+			case  "L": return {height: '200px', width: '200px'};
+			case "105":
+			case  "XL": return {height: '250px', width: '250px'};
 		}
 	}
 	function ColorSet (color) {
 		switch (color) {
+			case "빨간색":
 			case "red": return 'red';
+			case "아이보리":
 			case "ivory": return 'grey lighten-5';
+			case "화이트":
 			case "white": return 'white';
+			case "그린":
 			case "green": return "green";
+			case "네이비":
 			case "navy": return "indigo darken-4";
+			case "파란색":
 			case "blue": return "blue";
+			case "베이지":
+			case "beisy": return "brown lighten-4";
 		}
 	}
 
 
 	function FontColor (color) {
 		switch (color) {
+			case "빨간색":
 			case "red": return 'white-text';
+			case "아이보리":
 			case "ivory": return '';
+			case "화이트":
 			case "white": return '';
+			case "그린":
 			case "green": return "white-text";
+			case "네이비":
 			case "navy": return "white-text";
+			case "파란색":
 			case "blue": return "white-text";
+			case "베이지":
+			case "beisy": return '';
 		}
 	}
 
@@ -222,20 +243,25 @@
 		function setThumbnail (url) {
 			$('.modal-content h5').text('이미지 미리보기');
 			if (!url) {
-				$('#thumnail').attr('src', 'http://placehold.it/300x300');
+				$('#thumnail').css('display', "inline-block").attr('src', 'http://placehold.it/300x300');
 				$('.comments p').text('등록된 대표 이미지가 없습니다.');
 			} else {
-				$('#thumnail').attr('src', url);
+				$('#thumnail').css('display', "inline-block").attr('src', url);
 				$('.comments p').text('');
 			}
 			$('#modal1').modal('open');
 		}
 
 		function setJsonParsing (jsonStr) {
-			var toJson = JSON.parse(jsonStr);
 			$('.modal-content h5').text('상품 정보');
 			$('.comments p').empty();
-			$('#thumnail').removeAttr('src');
+			$('#thumnail').removeAttr('src').css('display', "none");
+			if (!jsonStr) {
+				$('.comments p').html('<span style=\"padding: 2rem 0; font-weight: bold;\">기타 정보가 등록되지 않았습니다.</span>');
+				return $('#modal1').modal('open');
+			};
+			var toJson = JSON.parse(jsonStr);
+			
 			if (toJson.color) {
 				var colorCard = '<div class=\"row\"><div class=\"col s12 m12\"><div class=\"card-panel '+ColorSet(toJson.color)+'\"><span class=\"'+FontColor(toJson.color)+'\"><strong style=\"font-weight: bold;\">색상 - '+toJson.color+'</strong></span></div></div></div>';
 				$('.comments p').html(colorCard);
@@ -283,7 +309,7 @@
 							id: 'itemTr_'+item.id
 						}));
 
-						$('#itemTr_'+item.id).append('<td>'+item.modelNumber+'</td><td>'+item.category+'</td><td>'+item.price+'</td><td>'+item.name+'</td><td>'+item.discountPrice+'</td><td>'+SelectedValue.text()+'</td><td>'+item.amount+'</td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemDetailBtn" id=\"'+item.imageUrl+'\">미리보기</a></td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemInfoDetailBtn" id='+item.information+'>상세</a></td>');
+						$('#itemTr_'+item.id).append('<td>'+item.modelNumber+'</td><td>'+item.category+'</td><td>'+item.price+'</td><td>'+item.name+'</td><td>'+item.discountPrice+'</td><td>'+SelectedValue.text()+'</td><td>'+item.amount+'</td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemDetailBtn" id=\"'+item.imageUrl+'\">미리보기</a></td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemInfoDetailBtn" '+(() => { return item.information ? 'id='+item.information : '' })()+'>상세</a></td>');
 					});
 					DetailClickEvent('itemDetailBtn');
 					DetailClickEvent('itemInfoDetailBtn');

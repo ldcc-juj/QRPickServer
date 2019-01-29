@@ -38,9 +38,12 @@
         <nav>
             <div class="nav-wrapper cyan darken-2">
                 <div class="row">
-                    <div class="col s12">
-                    <a href="/admin" class="breadcrumb">Dashboard</a>
-                    <a href="/displaylist" class="breadcrumb">Display List</a>
+                    <div class="col s8 m8 l8">
+                        <a href="/admin" class="breadcrumb">Dashboard</a>
+                        <a href="/displaylist" class="breadcrumb">Display List</a>
+                    </div>
+                    <div class="col s4 m4 l4 right-align" style="display: inline-block;">
+                        <a class="waves-effect waves-light btn red" style="color: #fff; font-weight: bold;" id="addDisplayBtn">매대 추가</a>
                     </div>
                 </div>
             </div>
@@ -57,20 +60,53 @@
                                         <!-- Modal Structure -->
 										<div id="modal1" class="modal">
                                             <div class="modal-content">
-                                                <h5>대표 이미지 미리보기</h5>
+                                                <h5>매대 수정 · 삭제</h5>
                                                 <p>
-                                                    <div class="row center-align">
-                                                        <div class="col s12 m12 l12">
+                                                    <div class="row valign-wrapper">
+                                                        <div class="col s12 m6 l6 center-align">
                                                             <img id="thumnail" width="200" />
+                                                            <div class="file-field input-field">
+                                                                <div class="btn">
+                                                                    <span>업로드</span>
+                                                                    <input type="file" name="imageFile">
+                                                                </div>
+                                                                <div class="file-path-wrapper">
+                                                                    <input class="file-path validate" type="text">
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="col s12 m12 l12 comments">
-                                                            <p></p>
+                                                        <div class="col s12 m6 l6 information">
+                                                            <div class="row">
+                                                                <form class="col s12">
+                                                                    <div class="row">
+                                                                        <div class="input-field col s12">
+                                                                            <input id="branch" placeholder="지점명을 입력하세요." type="text" class="validate">
+                                                                            <label for="branch">지점명</label>
+                                                                        </div>
+                                                                        <div class="input-field col s12">
+                                                                            <input id="brand" placeholder="브랜드를 입력하세요." type="text" class="validate">
+                                                                            <label for="brand">브랜드</label>
+                                                                        </div>
+                                                                        <div class="input-field col s12">
+                                                                            <input id="location" placeholder="매장 내 위치를 입력하세요." type="text" class="validate">
+                                                                            <label for="location">지점 내 위치</label>
+                                                                        </div>
+                                                                    </div>    
+                                                                </form>
+                                                            </div>
+                                                            <div class="row right-align">
+                                                                <div class="col s12">
+                                                                    <a id="deleteBtn" dataid="" class="waves-effect waves-light btn red darken-1"><i class="material-icons left">warning</i>영구 삭제</a>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </p>
                                             </div>
                                             <div class="modal-footer">
-                                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">확인</a>
+                                                <a id="createDisplay" class="modal-action modal-close waves-effect waves-light btn green lighten-1" style="display: none;">생성</a>
+                                                <a id="updateDisplay" dataid= "" class="modal-action modal-close waves-effect waves-light btn green lighten-1">저장</a>
+                                                <a class="modal-action modal-close waves-effect waves-light btn cyan lighten-1">취소</a>
                                             </div>
                                         </div>
 									</div>
@@ -93,18 +129,154 @@
 <script type="text/javascript" src="../views/vendors/materialize-admin/js/materialize.min.js"></script>
 <!--scrollbar-->
 <script type="text/javascript" src="../views/vendors/materialize-admin/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<!-- chartjs -->
-<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/chartjs/chart.min.js"></script>
 <!--plugins.js - Some Specific JS codes for Plugin Settings-->
 <script type="text/javascript" src="../views/vendors/materialize-admin/js/plugins.js"></script>
 <!--custom-script.js - Add your own theme custom JS-->
 <script type="text/javascript" src="../views/vendors/materialize-admin/js/custom-script.js"></script>
-<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script type="text/javascript" src="../views/vendors/materialize-admin/vendors/jsgrid/js/jsgrid.min.js"></script>
 <script>
+    function addCreateEvent () {
+        $('#createDisplay').off().on('click', function () {
+            var formData = new FormData();
+            $("input[name=imageFile]")[0].files[0]
+            ? formData.append("image", $("input[name=imageFile]")[0].files[0])
+            : null
+
+            formData.append("branch", $("input[id=branch]").val());
+            formData.append("brand", $("input[id=brand]").val());
+            formData.append("location", $("input[id=location]").val());
+
+            $.ajax({
+                method: "POST",
+                url: "/display/create",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(newDisplay){
+                    var display = newDisplay.data;
+                    $('#cardSection').append($('<div />', {
+                        class: "col s6 m4 l3",
+                        id: 'col_'+display.id
+                    }));
+
+                    $('#col_'+display.id).append($('<div />', {
+                        class: 'card',
+                        id: 'card_'+display.id
+                    }));
+
+                    $('#card_'+display.id).append($('<div />', {
+                        class: 'card-image',
+                        id: 'card-image-'+display.id
+                    }));
+
+                    $('#card_'+display.id).append($('<div />', {
+                        class: 'card-content center-align',
+                        id: 'card-content-'+display.id
+                    }));
+
+                    $('#card-image-'+display.id).append('<img class=\"display_img\" src=\"'+(() => { return display.imageUrl ? display.imageUrl : 'http://placehold.it/300x300' })()+'\" /><span class="card-title">'+display.branch+'</span>');
+                    $('#card-image-'+display.id).append('<a class=\"btn-floating btn-large halfway-fab waves-effect waves-light red updateDisplayBtn\" id='+display.id+'><i class=\"material-icons\">edit</i></a>');
+                    $('#card-content-'+display.id).append('<p class=\"brandName\">'+display.brand+'</p><div class=\"divider\" style=\"margin: 0.5rem;\"></div><p class=\"locationName\">'+display.location+'</p>');
+                    addUpdateBtnEvent();
+                }
+            });
+        });
+    }
+
     function addUpdateBtnEvent () {
         $('.updateDisplayBtn').off().on('click', function () {
-            $('#modal1').modal('open');
+            var getId = $(this).attr('id');
+            $.ajax({
+                method: "POST",
+                url: "/display/detail",
+                data: {
+                    id: Number(getId)
+                },
+                success: function(result){
+                    var data = result.data;
+                    $('.modal-content h5').text('매대 수정·삭제');
+                    $('#thumnail').attr('src', data.imageUrl ? data.imageUrl : 'http://placehold.it/300x300');
+                    $('input#branch').val(data.branch);
+                    $('input#brand').val(data.brand);
+                    $('input#location').val(data.location);
+                    $('#updateDisplay').css('display', 'inline-block').attr('dataid', data.id);
+                    $('#deleteBtn').css('display', 'inline-block').attr('dataid', data.id);
+                    $('#createDisplay').css('display', 'none');
+                    $('#modal1').modal('open');
+                }
+            });
+        });
+
+        $('#updateDisplay').off().on('click', function () {
+            var formData = new FormData();
+            $("input[name=imageFile]")[0].files[0]
+            ? formData.append("image", $("input[name=imageFile]")[0].files[0])
+            : null
+
+            formData.append("branch", $("input[id=branch]").val());
+            formData.append("brand", $("input[id=brand]").val());
+            formData.append("location", $("input[id=location]").val());
+            formData.append("id", Number($(this).attr('dataid')));
+
+            $.ajax({
+                method: "POST",
+                url: "/display/update",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(displaylist){
+                    $.ajax({
+                        method: "POST",
+                        url: "/display/detail",
+                        data: {
+                            id: Number($('#updateDisplay').attr('dataid'))
+                        },
+                        success: function(result){
+                            var data = result.data;
+
+                            $('#card-image-'+data.id+' img').attr('src', (() => { return data.imageUrl ? data.imageUrl : 'http://placehold.it/300x300' })())
+                            $('#card-image-'+data.id+' span').text(data.branch);
+                            $('#card-content-'+data.id+' p.brandName').text(data.brand);
+                            $('#card-content-'+data.id+' p.locationName').text(data.location);
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#deleteBtn').off().on('click', function () {
+            Swal.fire({
+            title: '매대 삭제',
+            text: '매대에 등록된 상품도 함께 삭제됩니다. 정말 삭제하시겠습니까?',
+            type: 'warning',
+            confirmButtonText: 'OK',
+            cancelButtonText: 'NO'
+            }).then((result) => {
+                if (result) {
+                    $.ajax({
+                        method: "POST",
+                        url: "/display/delete",
+                        data: {
+                            id: Number($('#deleteBtn').attr('dataid'))
+                        },
+                        success: function(result){
+                            $('#modal1').modal('close');
+                            $('#col_'+$('#deleteBtn').attr('dataid')).remove();
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                            Toast.fire({
+                                type: 'success',
+                                title: '삭제되었습니다!'
+                            })
+                        }
+                    });
+                }
+            });
         });
     }
 
@@ -121,31 +293,44 @@
                 displaylist.data.forEach((display, index) => {
                     $('#cardSection').append($('<div />', {
                         class: "col s6 m4 l3",
-                        id: 'col_'+index
+                        id: 'col_'+display.id
                     }));
 
-                    $('#col_'+index).append($('<div />', {
+                    $('#col_'+display.id).append($('<div />', {
                         class: 'card',
-                        id: 'card_'+index
+                        id: 'card_'+display.id
                     }));
 
-                    $('#card_'+index).append($('<div />', {
+                    $('#card_'+display.id).append($('<div />', {
                         class: 'card-image',
-                        id: 'card-image-'+index
+                        id: 'card-image-'+display.id
                     }));
 
-                    $('#card_'+index).append($('<div />', {
+                    $('#card_'+display.id).append($('<div />', {
                         class: 'card-content center-align',
-                        id: 'card-content-'+index
+                        id: 'card-content-'+display.id
                     }));
 
-                    $('#card-image-'+index).append('<img class=\"display_img\" src=\"'+(() => { return display.imageUrl ? display.imageUrl : 'http://placehold.it/300x300' })()+'\" /><span class="card-title">'+display.branch+'</span>');
-                    $('#card-image-'+index).append('<a class=\"btn-floating btn-large halfway-fab waves-effect waves-light red updateDisplayBtn\" id=\"'+display.id+'\"><i class=\"material-icons\">edit</i></a>');
-                    $('#card-content-'+index).append('<p>'+display.brand+'</p><div class=\"divider\" style=\"margin: 0.5rem;\"></div><p>'+display.location+'</p>');
+                    $('#card-image-'+display.id).append('<img class=\"display_img\" src=\"'+(() => { return display.imageUrl ? display.imageUrl : 'http://placehold.it/300x300' })()+'\" /><span class="card-title">'+display.branch+'</span>');
+                    $('#card-image-'+display.id).append('<a class=\"btn-floating btn-large halfway-fab waves-effect waves-light red updateDisplayBtn\" id='+display.id+'><i class=\"material-icons\">edit</i></a>');
+                    $('#card-content-'+display.id).append('<p class=\"brandName\">'+display.brand+'</p><div class=\"divider\" style=\"margin: 0.5rem;\"></div><p class=\"locationName\">'+display.location+'</p>');
                 });
 
                 addUpdateBtnEvent();
             }
+        });
+
+        $('#addDisplayBtn').click(function () {
+            $('.modal-content h5').text('매대 생성');
+            $('#thumnail').attr('src', 'http://placehold.it/300x300');
+            $('input#branch').val('');
+            $('input#brand').val('');
+            $('input#location').val('');
+            $('#updateDisplay').css('display', 'none');
+            $('#createDisplay').css('display', 'inline-block');
+            $('#deleteBtn').css('display', 'none');
+            $('#modal1').modal('open');
+            addCreateEvent();
         });
     });
 </script>

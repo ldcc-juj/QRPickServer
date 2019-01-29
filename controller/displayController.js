@@ -67,10 +67,12 @@ router.post('/create', async (req, res) => {
         const data = {
             branch: branch,
             brand: brand,
-            location: location,
-            imagePath: '',
-            imageUrl: (image && image instanceof String) ? image : ''
+            location: location
         };
+
+        if (image && image instanceof String) {
+            data.imageUrl = image;
+        }
 
         fileName
         ? go(
@@ -115,11 +117,13 @@ router.post('/update', async (req, res) => {
             data: {
                 branch: branch,
                 brand: brand,
-                location: location,
-                imagePath: '',
-                imageUrl: (image && image instanceof String) ? image : ''
+                location: location
             }
         };
+
+        if (image && image instanceof String) {
+            options.data.imageUrl = image;
+        }
 
         fileName
         ? go(
