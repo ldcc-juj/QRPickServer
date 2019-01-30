@@ -128,12 +128,12 @@ router.post('/update', async (req, res) => {
         fileName
         ? go(
             null,
-            _ => displayModel.find({ where: { id: id } }),
+            _ => displayModel.findOne({ where: { id: id } }),
             result => {
-                if (result[0]) {
-                    resultData = JSON.parse(JSON.stringify(result[0]));
-                    if (result[0].imagePath) {
-                        deleteFile(result[0].imagePath);
+                if (result.dataValues) {
+                    resultData = JSON.parse(JSON.stringify(result.dataValues));
+                    if (result.dataValues.imagePath) {
+                        deleteFile(result.dataValues.imagePath);
                     }
                 } else{
                     throw new Error("No Such Data")

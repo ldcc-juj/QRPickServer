@@ -71,7 +71,7 @@
                                                                     <input type="file" name="imageFile">
                                                                 </div>
                                                                 <div class="file-path-wrapper">
-                                                                    <input class="file-path validate" type="text">
+                                                                    <input class="file-path validate" type="text" name="imageFileName">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -203,6 +203,8 @@
                     $('#updateDisplay').css('display', 'inline-block').attr('dataid', data.id);
                     $('#deleteBtn').css('display', 'inline-block').attr('dataid', data.id);
                     $('#createDisplay').css('display', 'none');
+                    $('input[name=imageFile]').val('');
+                    $('input[name=imageFileName]').val('');
                     $('#modal1').modal('open');
                 }
             });
@@ -335,6 +337,8 @@
             $('#updateDisplay').css('display', 'none');
             $('#createDisplay').css('display', 'inline-block');
             $('#deleteBtn').css('display', 'none');
+            $('input[name=imageFile]').val('');
+            $('input[name=imageFileName]').val('');
             $('#modal1').modal('open');
             addCreateEvent();
         });
