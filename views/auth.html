@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
 	<title>대시보드</title>
+	<!-- Favicons-->
+    <link rel="icon" href="../views/vendors/materialize-admin/images/favicon/qrpick.png" sizes="32x32">
 	<!-- CORE CSS-->
 	<link rel="stylesheet" href="../views/vendors/materialize-admin/css/themes/fixed-menu/materialize.css" type="text/css" />
 	<link rel="stylesheet" href="../views/vendors/materialize-admin/css/themes/fixed-menu/style.css" type="text/css" />
@@ -228,6 +230,7 @@
 			case "royal blue": return " light-blue lighten-1";
 			case "light gray": return "grey lighten-3";
 			case "purple": return "purple";
+			case "brown": return "brown";
 		}
 	}
 
@@ -257,6 +260,7 @@
 			case "royal blue": return "";
 			case "light gray": return "";
 			case "purple": return "white-text";
+			case "brown": return "white-text";
 		}
 	}
 
@@ -280,10 +284,8 @@
 		texArray.forEach((data, index) => {
 			if (data !== "") {
 				if (data.substr(data.length - 1, 1) !== "\%" && data.substr(data.length - 1, 1) !== '\％') {
-					console.log('소재')
 					$(classname+' div.col table.textileTable tbody').append('<tr class="tr_'+index+'"><td>'+data+'</td></tr>')
 				} else if (data.substr(data.length - 1, 1) === "\%" || data.substr(data.length - 1, 1) === '\％'){
-					console.log('함유율')
 					$(classname+' div.col table.textileTable tbody tr.tr_'+(index-1)).append('<td>'+data+'</td>')
 				}
 			}
@@ -344,6 +346,7 @@
 			$('#modal1').modal('open');
 		}
 
+		/* 이미지, 기타 정보 데이터 모달에 정의 및 모달 오픈 */
 		$('.'+className).off().on('click', function () {
 			className !== 'itemInfoDetailBtn'
 			? setThumbnail($(this).attr('id'))
@@ -354,7 +357,7 @@
 	var selectEvent = function () {
 		$('#displaySelected').off().on('change', function () {
 			var SelectedValue = $("option:selected", this);
-
+			var BreakException = {};
 			$.ajax({
 				method: "POSt",
 				url: "/item/list",
@@ -368,32 +371,36 @@
 					} else {
 						$('#noItem').css('display', 'none');
 					}
-
-					itemlist.data.forEach((item, index) => {
-						if (index > 5) {
-							return;
-						}
-
-						$('#itemInfoSection').append($('<tr />', {
-							id: 'itemTr_'+item.id
-						}));
-
-						var others = item.information ? JSON.parse(item.information) : null
-
-						$('#itemTr_'+item.id).append('<td>'+item.modelNumber+'</td><td>'+item.category+'</td><td>'+item.price+'</td><td>'+item.name.substr(0, 8)+'...'+'</td><td>'+item.discountPrice+'</td><td>'+SelectedValue.text().substr(0, 8)+'...'+'</td><td>'+item.amount+'</td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemDetailBtn" id=\"'+((url) => { return url ? url : ''})(item.imageUrl)+'\">미리보기</a></td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemInfoDetailBtn" id="information_'+item.id+'">상세</a></td>');
-
-						if (others) {
-							if (others.color) {
-								$('#information_'+item.id).attr('color', others.color);
+					try {
+						itemlist.data.forEach((item, index) => {
+							if (index === 5) {
+								throw BreakException; // 5개만 출력
 							}
-							if (others.size) {
-								$('#information_'+item.id).attr('size', others.size);
+
+							/* 테이블에 데이터 출력 */
+							$('#itemInfoSection').append($('<tr />', {
+								id: 'itemTr_'+item.id
+							}));
+
+							var others = item.information ? JSON.parse(item.information) : null
+
+							$('#itemTr_'+item.id).append('<td>'+item.modelNumber+'</td><td>'+item.category+'</td><td>'+item.price+'</td><td>'+item.name.substr(0, 8)+'...'+'</td><td>'+item.discountPrice+'</td><td>'+SelectedValue.text().substr(0, 8)+'...'+'</td><td>'+item.amount+'</td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemDetailBtn" id=\"'+((url) => { return url ? url : ''})(item.imageUrl)+'\">미리보기</a></td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemInfoDetailBtn" id="information_'+item.id+'">상세</a></td>');
+
+							if (others) {
+								if (others.color) {
+									$('#information_'+item.id).attr('color', others.color);
+								}
+								if (others.size) {
+									$('#information_'+item.id).attr('size', others.size);
+								}
+								if (others.textile) {
+									$('#information_'+item.id).attr('textile', others.textile);
+								}
 							}
-							if (others.textile) {
-								$('#information_'+item.id).attr('textile', others.textile);
-							}
-						}
-					});
+						});
+					} catch (e) {
+						if (e !== BreakException) throw e;
+					}
 					DetailClickEvent('itemDetailBtn');
 					DetailClickEvent('itemInfoDetailBtn');
 				}

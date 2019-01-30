@@ -15,7 +15,7 @@
     <meta name="keywords" content="materialize, admin template, dashboard template, flat admin template, responsive admin template,">
     <title>Login Page | Materialize - Material Design Admin Template</title>
     <!-- Favicons-->
-    <link rel="icon" href="../views/vendors/materialize-admin/images/favicon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" href="../views/vendors/materialize-admin/images/favicon/qrpick.png" sizes="32x32">
     <!-- Favicons-->
     <link rel="apple-touch-icon-precomposed" href="../views/vendors/materialize-admin/images/favicon/apple-touch-icon-152x152.png">
     <!-- For iPhone -->
@@ -92,6 +92,11 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script>
         $(document).ready(function () {
+            $("input[id=password]").keydown(function(key) {
+                if (key.keyCode == 13) {
+                  $('#loginBtn').trigger('click');
+                }
+            });
             $('#loginBtn').click(function () {
                 var authid = $('input[id=authid]').val();
                 var password = $('input[id=password]').val();

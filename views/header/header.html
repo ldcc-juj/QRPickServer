@@ -82,7 +82,7 @@
             </li>
             <li class="divider"></li>
             <li>
-                <a href="#" class="grey-text text-darken-1">
+                <a href="#" class="grey-text text-darken-1" id="logoutBtn">
                 <i class="material-icons">keyboard_tab</i> 로그아웃 
                 </a>
             </li>
@@ -95,4 +95,14 @@
 <!-- END HEADER -->
 <script>
     $('#logo_img').css('height', $('header').height()+'px');
+
+    $('#logoutBtn').on('click', function() {
+        $.ajax({
+            method: "POST",
+            url: "/auth/logout",
+            success: function(userlist){
+                location.reload();
+            }
+        });
+    });
 </script>
