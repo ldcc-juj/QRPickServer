@@ -36,7 +36,7 @@ select{
 	border-bottom: 1px solid #fff !important;
 }
 
-.modal {
+#modal1 {
 	max-width: 45%;
 	width: 45%;
 }
@@ -61,4 +61,9 @@ select{
 	border: 3px solid #26a69a;
     border-radius: 0.2rem;
     box-shadow: 0 3px 4px 2px #e0e0e0;
+}
+
+.blocked-btn {
+	display: block !important;
+    width: 100% !important;
 }

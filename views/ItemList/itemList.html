@@ -65,22 +65,86 @@
                                             </div>
                                         </div>
                                         <!-- Modal Structure -->
-										<div id="modal1" class="modal">
+										<div id="item_modal" class="modal">
                                             <div class="modal-content">
-                                                <h5>대표 이미지 미리보기</h5>
-                                                <p>
-                                                    <div class="row center-align">
-                                                        <div class="col s12 m12 l12">
-                                                            <img id="thumnail" width="200" />
-                                                        </div>
-                                                        <div class="col s12 m12 l12 comments">
-                                                            <p></p>
+                                                <h5></h5>
+                                                <div class="row center-align">
+                                                    <div class="col s12 m12 l4">
+                                                        <img id="thumnail" width="200" src="http://placehold.it/300x300"/>
+                                                        <div class="file-field input-field">
+                                                            <div class="btn">
+                                                                <span>업로드</span>
+                                                                <input type="file" name="imageFile">
+                                                            </div>
+                                                            <div class="file-path-wrapper">
+                                                                <input class="file-path validate" type="text">
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col s12 m12 l12">
+                                                                        <a class="waves-effect waves-light btn red lighten-1 blocked-btn" id="deleteItem" dataid=""><i class="material-icons">warning</i> 영구 삭제</a>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </p>
+                                                    <div class="col s12 m12 l8 item-input">
+                                                        <div class="row">
+                                                            <form class="col s12 m12 l12">
+                                                                    <legend class="left-align" style="font-weight: bold; margin: 0.7rem 0;">기본 정보</legend>
+                                                                    <div class="row">
+                                                                        <div class="input-field col s12 m12 l6">
+                                                                            <input placeholder="모델 번호 입력" id="modelNumber" type="text" class="validate">
+                                                                            <label for="modelNumber">모델 번호*</label>
+                                                                        </div>
+                                                                        <div class="input-field col s12 m12 l6">
+                                                                            <input placeholder="상품명 입력" id="name" type="text" class="validate">
+                                                                            <label for="name">상품명*</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="input-field col s12 m12 l6">
+                                                                            <input placeholder="상품 분류 입력" id="category" type="text" class="validate">
+                                                                            <label for="category">분류</label>
+                                                                        </div>
+                                                                        <div class="input-field col s12 m12 l6">
+                                                                            <select class="icons brand" id="displayInModal">
+                                                                                <option value="" disabled selected>매대 선택</option>
+                                                                            </select>
+                                                                            <label>매대 선택*</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="input-field col s12 m6 l4">
+                                                                            <input placeholder="정가 입력" id="price" type="text" class="validate">
+                                                                            <label for="price">판매 정가*</label>
+                                                                        </div>
+                                                                        <div class="input-field col s12 m6 l4">
+                                                                            <input placeholder="할인가 입력 (선택)" id="discountPrice" type="text" class="validate">
+                                                                            <label for="discountPrice">할인가</label>
+                                                                        </div>
+                                                                        <div class="input-field col s12 m12 l4">
+                                                                            <input placeholder="재고 수량 입력" id="amount" type="text" class="validate">
+                                                                            <label for="amount">수량</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <legend class="left-align" style="font-weight: bold; margin: 0.7rem 0;">기타 정보</legend>
+                                                                        <div class="input-field col s12 m12 l6">
+                                                                            <input placeholder="색상 입력 (선택)" id="color" type="text" class="validate">
+                                                                            <label for="color">상품 색상</label>
+                                                                        </div>
+                                                                        <div class="input-field col s12 m12 l6">
+                                                                            <input placeholder="사이즈 입력 (선택)" id="size" type="text" class="validate">
+                                                                            <label for="size">사이즈 (치수)</label>
+                                                                        </div>
+                                                                    </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">확인</a>
+                                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn green lighten-1 saveItemBtn" id="createItem" dataid="">저장</a>
+                                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn cyan lighten-1">취소</a>
                                             </div>
                                         </div>
 									</div>
@@ -109,12 +173,269 @@
 <script type="text/javascript" src="../views/vendors/materialize-admin/js/plugins.js"></script>
 <!--custom-script.js - Add your own theme custom JS-->
 <script type="text/javascript" src="../views/vendors/materialize-admin/js/custom-script.js"></script>
-<script type="text/javascript" src="../views/vendors/materialize-admin/vendors/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script type="text/javascript" src="../views/vendors/materialize-admin/vendors/jsgrid/js/jsgrid.min.js"></script>
 <script>
-    function addUpdateBtnEvent () {
-        $('.updateDisplayBtn').off().on('click', function () {
-            $('#modal1').modal('open');
+    function addNewItemEvent () {
+        $('#addNewItemBtn').off().on('click', function () {
+            $('input[id=modelNumber]').val('');
+            $('input[id=name]').val('');
+            $('input[id=category]').val("");
+            $('select[id=displayInModal]').val($('#displaySelected').val());
+            $('#displayInModal').material_select();
+            
+            $('input[id=price]').val('');
+            $('input[id=discountPrice]').val('');
+            $('input[id=amount]').val(0);
+            $('input[id=color]').val('');
+            $('input[id=size]').val('');
+            
+            $('#thumnail').attr('src', "http://placehold.it/300x300")
+
+
+            $('.saveItemBtn').attr('id', 'createItem');
+            $('.saveItemBtn').off();
+            $('#item_modal').modal('open');
+            addCreateItemEvent();
+        });
+    }
+
+    function addCreateItemEvent () {
+        $('#createItem').off().on('click', function () {
+            var formData = new FormData();
+            $("input[name=imageFile]")[0].files[0]
+            ? formData.append("image", $("input[name=imageFile]")[0].files[0])
+            : null
+
+            formData.append("modelNumber", $("input[id=modelNumber]").val());
+            formData.append("name", $("input[id=name]").val());
+            formData.append("category", $("input[id=category]").val());
+
+            $("select[id=displayInModal]").val()
+            ?   formData.append("brandId", Number($("select[id=displayInModal]").val()))
+            :   null
+            
+            formData.append("price", $("input[id=price]").val());
+            formData.append("discountPrice", $("input[id=discountPrice]").val());
+            formData.append("amount", $("input[id=amount]").val());
+            
+            var information = {};
+            if ($("input[id=color]").val()) {
+                information["color"] = $("input[id=color]").val();
+            }
+
+            if ($("input[id=size]").val()) {
+                information["size"] = $("input[id=size]").val();
+            }
+
+            if (information !== {}) {
+                formData.append("information", JSON.stringify(information));
+            }
+
+            $.ajax({
+				method: "POSt",
+				url: "/item/create",
+				data: formData,
+                processData: false,
+                contentType: false,
+				success: function (result) {
+                    var data = result.data;
+                    if ($('#displaySelected').val() === data.brandId) {
+                        $('#notices').css('display', 'none');
+                        $('.collection').css('display', 'block').append($('<li />', {
+                            class: 'collection-item avatar',
+                            id: 'li_'+data.id
+                        }));
+
+                        $('#li_'+data.id).append($('<img />', {
+                            src: data.imageUrl ? data.imageUrl : 'https://pixinvent.com/materialize-material-design-admin-template/images/logo/materialize-logo.png',
+                            class: 'circle'
+                        }));
+
+                        $('#li_'+data.id).append($('<span />', {
+                            class: 'title'
+                        }));
+
+                        $('#li_'+data.id).append($('<p />', {
+                            class: 'information'
+                        }));
+
+                        $('#li_'+data.id).append($('<a />', {
+                            class: 'secondary-content moreBtn',
+                            id: 'detail_'+data.id,
+                            dataid: data.id
+                        }));
+
+                        $('#li_'+data.id+' span').text('['+data.modelNumber+']\t'+data.name);
+
+                        $('#li_'+data.id+' p').html('분류 | '+data.category+'<br>가격&nbsp;|&nbsp;<span class=\"'+((isSale) => { return isSale ? 'not' :'highlight' })(data.discountPrice)+'\">'+data.price+'원&nbsp;</span><i class=\"material-icons\" style=\"font-size: 1rem;\">trending_flat</i>&nbsp;<span class=\"highlight\">'+data.discountPrice+'원</span>');
+                        
+                        $('#li_'+data.id+' a.moreBtn').addClass('waves-effect waves-light').html('<i class=\"material-icons\">queue</i>');
+                        clickDetailEvent();
+                    }
+                }
+            });
+        });
+    }
+
+    function deleteItemEvent () {
+        $('#deleteItem').off().on('click', function () {
+            Swal.fire({
+            title: '상품 삭제',
+            text: '정말 삭제하시겠습니까?',
+            type: 'warning',
+            showCancelButton: true,
+            showCloseButton: true,
+            showConfirmButton: true,
+            confirmButtonText: 'OK',
+            cancelButtonText: 'NO'
+            }).then((result) => {
+                if (result.value) {
+                    var id = Number($('#deleteItem').attr('dataid'));
+                    $.ajax({
+                        method: "POST",
+                        url: "/item/delete",
+                        data: {
+                            id: id
+                        },
+                        success: function(result){
+                            $('#item_modal').modal('close');
+                            $('#li_'+$('#deleteItem').attr('dataid')).remove();
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                            Toast.fire({
+                                type: 'success',
+                                title: '삭제되었습니다!'
+                            })
+                        }
+                    });
+                } else{
+                    return;
+                }
+            });
+        });
+    }
+
+    function addUpdateEvent () {
+        $('#updateItem').off().on('click', function () {
+            var id = $(this).attr('dataid');
+
+            var formData = new FormData();
+            $("input[name=imageFile]")[0].files[0]
+            ? formData.append("image", $("input[name=imageFile]")[0].files[0])
+            : null
+
+            formData.append("modelNumber", $("input[id=modelNumber]").val());
+            formData.append("name", $("input[id=name]").val());
+            formData.append("category", $("input[id=category]").val());
+
+            $("select[id=displayInModal]").val()
+            ?   formData.append("brandId", Number($("select[id=displayInModal]").val()))
+            :   null
+            
+            formData.append("price", $("input[id=price]").val());
+            formData.append("discountPrice", $("input[id=discountPrice]").val());
+            formData.append("amount", $("input[id=amount]").val());
+            formData.append("id", Number(id));
+            
+            var information = {};
+            if ($("input[id=color]").val()) {
+                information["color"] = $("input[id=color]").val();
+            }
+
+            if ($("input[id=size]").val()) {
+                information["size"] = $("input[id=size]").val();
+            }
+
+            if (information !== {}) {
+                formData.append("information", JSON.stringify(information));
+            }
+
+            $.ajax({
+				method: "POSt",
+				url: "/item/update",
+				data: formData,
+                processData: false,
+                contentType: false,
+				success: function (result) {
+                    var data = result.data;
+
+                    data.imageUrl
+                    ? $('#li_'+data.id+' img').attr('src', data.imageUrl)
+                    : $('#li_'+data.id+' img').attr('src', 'https://pixinvent.com/materialize-material-design-admin-template/images/logo/materialize-logo.png')
+
+                    $('#li_'+data.id+' span').text('['+data.modelNumber+']\t'+data.name);
+
+                    $('#li_'+data.id+' p').html('분류 | '+data.category+'<br>가격&nbsp;|&nbsp;<span class=\"'+((isSale) => { return isSale ? 'not' :'highlight' })(data.discountPrice)+'\">'+data.price+'원&nbsp;</span><i class=\"material-icons\" style=\"font-size: 1rem;\">trending_flat</i>&nbsp;<span class=\"highlight\">'+data.discountPrice+'원</span>');
+                    clickDetailEvent();
+                }
+            });
+        });
+    }
+
+    function clickDetailEvent () {
+        $('.moreBtn').off().on('click', function () {
+            var id = Number($(this).attr('dataid'));
+
+            function parsingInfo (information) {
+                const data = JSON.parse(information);
+                if (data.color) {
+                    $('input[id=color]').val(data.color);
+                }
+
+                if (data.size) {
+                    $('input[id=size]').val(data.size);
+                }
+            }
+
+            $.ajax({
+				method: "POSt",
+				url: "/item/detail",
+				data: {
+					id: id
+				},
+				success: function (result) {
+                    var data = result.data;
+                    $('input[id=modelNumber]').val(data.modelNumber);
+                    $('input[id=name]').val(data.name);
+                    $('input[id=category]').val(data.category);
+                    data.brandId
+                    ?   (() => {
+                            $("#displayInModal option").not("#displayInModal option[value="+data.brandId+"]").prop("selected", false);
+                            $('select[id=displayInModal]').val(data.brandId);
+                        })()
+                    :   (() => {
+                            $("#displayInModal option").prop("selected", false);
+                            $('select[id=displayInModal]').val("").prop("selected", true);
+                        })()
+                    $('#displayInModal').material_select();
+                    
+                    $('input[id=price]').val(data.price);
+                    $('input[id=discountPrice]').val(data.discountPrice ? data.discountPrice : '미정');
+                    $('input[id=amount]').val(data.amount);
+                    
+                    data.imageUrl
+                    ?   $('#thumnail').attr('src', data.imageUrl)
+                    :   null
+
+                    data.information
+                    ?   parsingInfo(data.information)
+                    :   null
+
+                    $('.saveItemBtn').attr('id', 'updateItem');
+                    $('.saveItemBtn').attr('dataid', data.id);
+                    $('#deleteItem').attr('dataid', data.id);
+                    $('.saveItemBtn').off();
+                    addUpdateEvent();
+                    deleteItemEvent();
+
+                    $('#item_modal').modal('open');
+                }
+            });
         });
     }
 
@@ -129,18 +450,16 @@
 					brandId: Number(SelectedValue.val())
 				},
 				success: function (itemlist) {
+                    $('.addItemSection').remove();
+                    $('.collection').empty();
+
 					if (itemlist.data.length < 1) {
                         $('.collection').css('display', 'none');
-                        $('#notices').siblings('.row').remove();
 						$('#notices').css('display', 'block').html('<strong style=\"font-weight: bold;\">해당 매대에 등록된 상품이 없습니다.</strong>');
-                        $('#notices').after('<div class="row center-align"><div class="col s12 m12 l12"><a class="waves-effect waves-light btn" id="addNewItemBtn"><i class="material-icons right">add</i> 상품 추가</a></div></div>');
                     } else {
                         $('#notices').css('display', 'none');
-                        $('#notices').siblings('.row').remove();
                         $('.collection').css('display', 'block');
                     }
-                    
-                    $('.collection').empty();
 
 					itemlist.data.forEach((item, index) => {
 						$('.collection').append($('<li />', {
@@ -162,18 +481,21 @@
                         }));
 
                         $('#li_'+item.id).append($('<a />', {
-                            class: 'secondary-content',
-                            id: 'deleteBtn'
+                            class: 'secondary-content moreBtn',
+                            id: 'detail_'+item.id,
+                            dataid: item.id
                         }));
 
                         $('#li_'+item.id+' span').text('['+item.modelNumber+']\t'+item.name);
 
                         $('#li_'+item.id+' p').html('분류 | '+item.category+'<br>가격&nbsp;|&nbsp;<span class=\"'+((isSale) => { return isSale ? 'not' :'highlight' })(item.discountPrice)+'\">'+item.price+'원&nbsp;</span><i class=\"material-icons\" style=\"font-size: 1rem;\">trending_flat</i>&nbsp;<span class=\"highlight\">'+item.discountPrice+'원</span>');
                         
-                        $('#li_'+item.id+' a#deleteBtn').addClass('waves-effect waves-light').html('<i class=\"material-icons\">queue</i>');
-                        $('#notices').after('<div class="row center-align"><div class="col s12 m12 l12"><a class="waves-effect waves-light btn" id="addNewItemBtn"><i class="material-icons right">add</i> 상품 추가</a></div></div>');
+                        $('#li_'+item.id+' a.moreBtn').addClass('waves-effect waves-light').html('<i class=\"material-icons\">queue</i>');
                     });
-				}
+                    $('#notices').after('<div class="row center-align addItemSection"><div class="col s12 m12 l12"><a class="waves-effect waves-light btn" id="addNewItemBtn"><i class="material-icons right">add</i> 상품 추가</a></div></div>');
+                    addNewItemEvent();
+                    clickDetailEvent();
+                }
 			});
 		});
 	};
@@ -192,9 +514,18 @@
 						id: 'display_'+display.id,
 						'data-icon': display.imageUrl ? display.imageUrl : "../views/vendors/materialize-admin/images/avatar/avatar-7.png",
 						class: 'circle'
-					}));
+                    }));
 
                     $('#display_'+display.id).text(display.branch+' > '+display.brand);
+
+                    $('#displayInModal').append($('<option/>', {
+						value: display.id,
+						id: 'displayinModal_'+display.id,
+						'data-icon': display.imageUrl ? display.imageUrl : "../views/vendors/materialize-admin/images/avatar/avatar-7.png",
+						class: 'circle'
+                    }));
+                    
+                    $('#displayinModal_'+display.id).text(display.branch+' > '+display.brand);
                 });
 				selectEvent();
 				$('select').material_select();

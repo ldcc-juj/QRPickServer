@@ -71,10 +71,8 @@ router.post('/detail', async (req, res) => {
 router.post('/create', async (req, res) => {
     try {
         const fileName = req.files ? req.files.image.name : false;
-        const { modelNumber = "미입력", category = "미정", price = 0, name, discountPrice, brandId, amount, information, image } = req.body;
-        
-	console.log(information);
-	const data = {
+        const { modelNumber = "미입력", category = "미정", price = 0, name, discountPrice = null, brandId = null, amount, information = null, image } = req.body;
+        const data = {
             modelNumber: modelNumber,
             category: category,
             price: price,
@@ -122,7 +120,7 @@ router.post('/create', async (req, res) => {
 router.post('/update', async (req, res) => {
     try {
         const fileName = req.files ? req.files.image.name : false;
-        const { id, modelNumber, category, price, name, discountPrice, brandId, amount, information, image } = req.body;
+        const { id, modelNumber, category="미정", price = 0, name, discountPrice = null, brandId = null, amount, information = null, image } = req.body;
         const options = {
             where: {
                 id: id
@@ -135,11 +133,13 @@ router.post('/update', async (req, res) => {
                 discountPrice: discountPrice,
                 brandId: brandId,
                 amount: amount,
-                information: (!!information && information instanceof Object) ? information : JSON.parse(information),
-                imagePath: '',
-                imageUrl: (image && image instanceof String) ? image : ''
+                information: (!!information && information instanceof Object) ? information : information ? JSON.parse(information) : null
             }
         };
+
+        if (image && image instanceof String) {
+            options.data.imageUrl = image;
+        }
 
         fileName
         ? go(
@@ -173,8 +173,20 @@ router.post('/update', async (req, res) => {
         : go(
             options,
             options => itemModel.update(options).catch(e => { throw e }),
-            result => result[0] > 0 
-            ? respondJson(res, resultCode.success, { desc: 'Item Update Success' })
+            result => {
+                if (result[0] > 0) {
+                    let options = {
+                        where: {
+                            id: id
+                        }
+                    };
+                    return itemModel.findOne(options).catch(e => { throw e });
+                } else {
+                    return false;
+                }
+            },
+            result => !!result && result.dataValues
+            ? respondJson(res, resultCode.success, result.dataValues)
             : respondOnError(res, resultCode.error, { desc: 'Item Update Fail, Check Your Parameters!' })
         );
     } catch (error) {

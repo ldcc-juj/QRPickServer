@@ -188,16 +188,18 @@
 <script>
 	function setSize (size) {
 		switch (size.toUpperCase()) {
+			case "80":
 			case "85":
-			case  "XS": return {height: '50px', width: '50px'};
+			case  "XS": return {height: '120px', width: '120px'};
 			case "90":
-			case  "S": return {height: '100px', width: '100px'};
+			case  "S": return {height: '150px', width: '150px'};
 			case "95":
-			case  "M": return {height: '150px', width: '150px'};
+			case  "M": return {height: '200px', width: '200px'};
 			case "100":
-			case  "L": return {height: '200px', width: '200px'};
+			case  "L": return {height: '250px', width: '250px'};
 			case "105":
-			case  "XL": return {height: '250px', width: '250px'};
+			case "110":
+			case  "XL": return {height: '290px', width: '290px'};
 		}
 	}
 	function ColorSet (color) {
@@ -215,7 +217,17 @@
 			case "파란색":
 			case "blue": return "blue";
 			case "베이지":
-			case "beisy": return "brown lighten-4";
+			case "beige": return "brown lighten-4";
+			case "회색":
+			case "grey": return "grey lighten-1";
+			case "yellow": return "yellow lighten-1";
+			case "와인":
+			case "wine": return "red accent-4";
+			case "black": return "grey darken-4";
+			case "orange": return "orange";
+			case "royal blue": return " light-blue lighten-1";
+			case "light gray": return "grey lighten-3";
+			case "purple": return "purple";
 		}
 	}
 
@@ -235,8 +247,47 @@
 			case "파란색":
 			case "blue": return "white-text";
 			case "베이지":
-			case "beisy": return '';
+			case "beige": return '';
+			case "회색":
+			case "grey": return '';
+			case "yellow": return "";
+			case "wine": return "white-text";
+			case "black": return "white-text";
+			case "orange": return "white-text";
+			case "royal blue": return "";
+			case "light gray": return "";
+			case "purple": return "white-text";
 		}
+	}
+
+	function setTextileTable (classname, textile) {
+		$(classname).append($('<div />', {
+			class: "col s12 m6 center-align textileCol"
+		}));
+
+		$(classname+' div.textileCol').append($('<table />', {
+			class: "bordered centered textileTable"
+		}));
+
+		$(classname+' div.col table.textileTable').append("<thead><tr><th>소재</th><th>함유율(량)</th></tr></thead><tbody></tbody>");
+
+
+		/* textile 파싱 */
+		var texArray = textile.split(/[ .·:;?!~,`"&|()<>{}\[\]\r\n/\\]+/);
+
+		console.log(texArray);
+
+		texArray.forEach((data, index) => {
+			if (data !== "") {
+				if (data.substr(data.length - 1, 1) !== "\%" && data.substr(data.length - 1, 1) !== '\％') {
+					console.log('소재')
+					$(classname+' div.col table.textileTable tbody').append('<tr class="tr_'+index+'"><td>'+data+'</td></tr>')
+				} else if (data.substr(data.length - 1, 1) === "\%" || data.substr(data.length - 1, 1) === '\％'){
+					console.log('함유율')
+					$(classname+' div.col table.textileTable tbody tr.tr_'+(index-1)).append('<td>'+data+'</td>')
+				}
+			}
+		});
 	}
 
 	var DetailClickEvent = function (className) {
@@ -252,33 +303,51 @@
 			$('#modal1').modal('open');
 		}
 
-		function setJsonParsing (jsonStr) {
+		function setJsonParsing (jsonObj) {
 			$('.modal-content h5').text('상품 정보');
 			$('.comments p').empty();
 			$('#thumnail').removeAttr('src').css('display', "none");
-			if (!jsonStr) {
+
+			var color = jsonObj.attr('color');
+			var size = jsonObj.attr('size');
+			var textile = jsonObj.attr('textile');
+
+			if (!color && !size && !textile) {
 				$('.comments p').html('<span style=\"padding: 2rem 0; font-weight: bold;\">기타 정보가 등록되지 않았습니다.</span>');
 				return $('#modal1').modal('open');
 			};
-			var toJson = JSON.parse(jsonStr);
 			
-			if (toJson.color) {
-				var colorCard = '<div class=\"row\"><div class=\"col s12 m12\"><div class=\"card-panel '+ColorSet(toJson.color)+'\"><span class=\"'+FontColor(toJson.color)+'\"><strong style=\"font-weight: bold;\">색상 - '+toJson.color+'</strong></span></div></div></div>';
+			if (color) {
+				var colorCard = '<div class=\"row colorSection\"><div class=\"col s12 m12\"><div class=\"card-panel '+ColorSet(color)+'\"><span class=\"'+FontColor(color)+'\"><strong style=\"font-weight: bold;\">색상 - '+color+'</strong></span></div></div></div>';
 				$('.comments p').html(colorCard);
 			}
-			if (toJson.size) {
+			if (size) {
 				var p = document.createElement("p");
 				$('.comments p').append(p);
-				var size = setSize(toJson.size);
-				$('.comments p p').append('<div class=\"row\"><div class=\"col s12 m12 center-align\"><div class=\"card-panel valign-wrapper center-align\" style=\"width:'+size.width+'; height:'+size.height+'\">사이즈 - '+toJson.size.toUpperCase()+'</div>');
+				var decSize = setSize(size);
+				$('.comments p p').append('<div class=\"row sizeSection\"><div class=\"col s12 m6 center-align\"><div class=\"card-panel valign-wrapper center-align\" style=\"width:'+decSize.width+'; height:'+decSize.height+'\">사이즈 - '+size.toUpperCase()+'</div>');
 			}
+
+			if (textile) {
+				if ($('.comments p').has('.sizeSection')) {
+					setTextileTable('.comments p p div.sizeSection', textile);
+				} else if ($('.comments p').has('.colorSection')) {
+					setTextileTable('.comments p div.colorSection', textile);
+				} else {
+					$('.comments p').append($('<div />', {
+						class: "row texTileSection"
+					}));
+					setTextileTable('.comments p div.texTileSection', textile);
+				}
+			}
+
 			$('#modal1').modal('open');
 		}
 
 		$('.'+className).off().on('click', function () {
 			className !== 'itemInfoDetailBtn'
 			? setThumbnail($(this).attr('id'))
-			: setJsonParsing($(this).attr('id'))
+			: setJsonParsing($(this))
 		});
 	};
 
@@ -309,7 +378,21 @@
 							id: 'itemTr_'+item.id
 						}));
 
-						$('#itemTr_'+item.id).append('<td>'+item.modelNumber+'</td><td>'+item.category+'</td><td>'+item.price+'</td><td>'+item.name+'</td><td>'+item.discountPrice+'</td><td>'+SelectedValue.text()+'</td><td>'+item.amount+'</td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemDetailBtn" id=\"'+item.imageUrl+'\">미리보기</a></td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemInfoDetailBtn" '+(() => { return item.information ? 'id='+item.information : '' })()+'>상세</a></td>');
+						var others = item.information ? JSON.parse(item.information) : null
+
+						$('#itemTr_'+item.id).append('<td>'+item.modelNumber+'</td><td>'+item.category+'</td><td>'+item.price+'</td><td>'+item.name.substr(0, 8)+'...'+'</td><td>'+item.discountPrice+'</td><td>'+SelectedValue.text().substr(0, 8)+'...'+'</td><td>'+item.amount+'</td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemDetailBtn" id=\"'+item.imageUrl+'\">미리보기</a></td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemInfoDetailBtn" id="information_'+item.id+'">상세</a></td>');
+
+						if (others) {
+							if (others.color) {
+								$('#information_'+item.id).attr('color', others.color);
+							}
+							if (others.size) {
+								$('#information_'+item.id).attr('size', others.size);
+							}
+							if (others.textile) {
+								$('#information_'+item.id).attr('textile', others.textile);
+							}
+						}
 					});
 					DetailClickEvent('itemDetailBtn');
 					DetailClickEvent('itemInfoDetailBtn');
