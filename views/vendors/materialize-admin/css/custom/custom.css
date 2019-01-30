@@ -67,3 +67,7 @@ select{
 	display: block !important;
     width: 100% !important;
 }
+
+.footer {
+	font-size: 0.7rem;
+}

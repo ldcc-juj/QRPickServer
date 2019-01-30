@@ -9,7 +9,7 @@ const { respondJson, respondOnError } = require('../utils/respond');
 const { authModel } = require('../model');
 const resultCode = require('../utils/resultCode');
 const { parameterFormCheck } = require('../utils/common');
-
+var cookieParser = require("cookie-parser");
 const controllerName = 'Auth';
 
 router.use((req, res, next) => {
@@ -32,7 +32,6 @@ router.post('/login', async (req, res) => {
   try {
     const { authid = false, password = false } = req.body;
 
-    console.log(req.body);
     if (!authid || !password) { throw { message: 'Incorrect Information!' }; };
 
     const options = {
@@ -50,8 +49,8 @@ router.post('/login', async (req, res) => {
 
     return !!accountInfo.id
     ? ((account) => {
-      //req.session.auth = account.id; // api 호출 시 체크할 값
-      //req.session.name = account.username;
+      req.session.auth = account.id; // api 호출 시 체크할 값
+		  res.cookie("user_sid", req.session.auth);
       respondJson(res, resultCode.success, account);
      })(accountInfo) 
     : respondOnError(res, resultCode.error, { desc: 'Invalid Auth' });
