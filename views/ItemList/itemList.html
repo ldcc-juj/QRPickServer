@@ -440,10 +440,10 @@
     }
 
     var selectEvent = function () {
-		$('#displaySelected').on('change', async function () {
-			var SelectedValue = await $("option:selected", this);
+		$('#displaySelected').off().on('change', function () {
+			var SelectedValue = $("option:selected", this);
 
-			await $.ajax({
+			$.ajax({
 				method: "POSt",
 				url: "/item/list",
 				data: {
