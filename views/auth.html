@@ -293,7 +293,7 @@
 	var DetailClickEvent = function (className) {
 		function setThumbnail (url) {
 			$('.modal-content h5').text('이미지 미리보기');
-			if (!url) {
+			if (!url || url === "null") {
 				$('#thumnail').css('display', "inline-block").attr('src', 'http://placehold.it/300x300');
 				$('.comments p').text('등록된 대표 이미지가 없습니다.');
 			} else {
@@ -380,7 +380,7 @@
 
 						var others = item.information ? JSON.parse(item.information) : null
 
-						$('#itemTr_'+item.id).append('<td>'+item.modelNumber+'</td><td>'+item.category+'</td><td>'+item.price+'</td><td>'+item.name.substr(0, 8)+'...'+'</td><td>'+item.discountPrice+'</td><td>'+SelectedValue.text().substr(0, 8)+'...'+'</td><td>'+item.amount+'</td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemDetailBtn" id=\"'+item.imageUrl+'\">미리보기</a></td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemInfoDetailBtn" id="information_'+item.id+'">상세</a></td>');
+						$('#itemTr_'+item.id).append('<td>'+item.modelNumber+'</td><td>'+item.category+'</td><td>'+item.price+'</td><td>'+item.name.substr(0, 8)+'...'+'</td><td>'+item.discountPrice+'</td><td>'+SelectedValue.text().substr(0, 8)+'...'+'</td><td>'+item.amount+'</td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemDetailBtn" id=\"'+((url) => { return url ? url : ''})(item.imageUrl)+'\">미리보기</a></td><td><a class="waves-effect waves-light btn-flat btn-small white-text itemInfoDetailBtn" id="information_'+item.id+'">상세</a></td>');
 
 						if (others) {
 							if (others.color) {
