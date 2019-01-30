@@ -235,7 +235,7 @@
             }
 
             $.ajax({
-				method: "POSt",
+				method: "POST",
 				url: "/item/create",
 				data: formData,
                 processData: false,
@@ -358,7 +358,7 @@
             }
 
             $.ajax({
-				method: "POSt",
+				method: "POST",
 				url: "/item/update",
 				data: formData,
                 processData: false,
@@ -395,7 +395,7 @@
             }
 
             $.ajax({
-				method: "POSt",
+				method: "POST",
 				url: "/item/detail",
 				data: {
 					id: id
@@ -446,7 +446,7 @@
 			var SelectedValue = $("option:selected", this);
 
 			$.ajax({
-				method: "POSt",
+				method: "POST",
 				url: "/item/list",
 				data: {
 					brandId: Number(SelectedValue.val())
