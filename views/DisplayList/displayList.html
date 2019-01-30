@@ -62,8 +62,8 @@
                                             <div class="modal-content">
                                                 <h5>매대 수정 · 삭제</h5>
                                                 <p>
-                                                    <div class="row valign-wrapper">
-                                                        <div class="col s12 m6 l6 center-align">
+                                                    <div class="row">
+                                                        <div class="col s12 m12 l6 center-align">
                                                             <img id="thumnail" width="200" />
                                                             <div class="file-field input-field">
                                                                 <div class="btn">
@@ -75,11 +75,11 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col s12 m6 l6 information">
+                                                        <div class="col s12 m12 l6 information">
                                                             <div class="row">
-                                                                <form class="col s12">
+                                                                <form class="col s12 m12 l12">
                                                                     <div class="row">
-                                                                        <div class="input-field col s12">
+                                                                        <div class="input-field col s12 m12 l12">
                                                                             <input id="branch" placeholder="지점명을 입력하세요." type="text" class="validate" data-length="20">
                                                                             <label for="branch">지점명</label>
                                                                         </div>
@@ -87,7 +87,7 @@
                                                                             <input id="brand" placeholder="브랜드를 입력하세요." type="text" class="validate" data-length="20">
                                                                             <label for="brand">브랜드</label>
                                                                         </div>
-                                                                        <div class="input-field col s12">
+                                                                        <div class="input-field col s12 m12 l12">
                                                                             <input id="location" placeholder="매장 내 위치를 입력하세요." type="text" class="validate" data-length="30">
                                                                             <label for="location">지점 내 위치</label>
                                                                         </div>
@@ -300,7 +300,7 @@
             success: function(displaylist){
                 displaylist.data.forEach((display, index) => {
                     $('#cardSection').append($('<div />', {
-                        class: "col s6 m4 l3",
+                        class: "col s12 m4 l3",
                         id: 'col_'+display.id
                     }));
 
