@@ -359,21 +359,21 @@
 			var SelectedValue = $("option:selected", this);
 			var BreakException = {};
 			$.ajax({
-				method: "POSt",
+				method: "POST",
 				url: "/item/list",
 				data: {
 					brandId: Number(SelectedValue.val())
 				},
 				success: function (itemlist) {
+					$('#itemInfoSection').empty();
 					if (itemlist.data.length < 1) {
-						$('#itemInfoSection tr').remove();
 						$('#noItem').text('해당 매대에 등록된 상품이 없습니다.').css('display', 'block');
 					} else {
 						$('#noItem').css('display', 'none');
 					}
 					try {
 						itemlist.data.forEach((item, index) => {
-							if (index === 5) {
+							if (index >= 5) {
 								throw BreakException; // 5개만 출력
 							}
 
